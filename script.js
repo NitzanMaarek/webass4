@@ -102,7 +102,6 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
                 "x-auth-token": self.token
             }
         };
-
         $http.get(api_url + 'auth/nizo', {headers:{"x-auth-token": self.token}}).then
         (function successCallback(response) {
             alert("success, response message is: " + response.data);
