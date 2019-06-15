@@ -1,17 +1,23 @@
 let app = angular.module('myApp', []);
 let api_url = 'http://localhost:3000/';
 
+let config = {
+    headers: {
+        'Content-Type': undefined
+    }
+};
+
 app.factory('testFactory',['$http', function($http) {
     function testFactory() {
     }
     testFactory = {
-        loginTest: function () {
+        loginTest: function (username, password) {
             // let username = $scope.login_username;
             // let password = $scope.login_pw;
 
             let data = {
-                userName: "chen",
-                password: "barvaz"
+                userName: username,
+                password: password
             };
 
             let config = {
@@ -19,8 +25,14 @@ app.factory('testFactory',['$http', function($http) {
                     'Content-Type': undefined
                 }
             };
+            alert(username+" : "+password);
 
-            let token = $http.post('http://localhost:3000/login', JSON.stringify(data), config);
+            let token = $http.post('http://localhost:3000/login', JSON.stringify(data), config).then
+            (function successCallback(response) {
+                alert(response.data);
+            }, function errorCallback(response) {
+                alert(response.status);
+            });
             return token;
         },
     };
@@ -61,10 +73,50 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     };
 
     $scope.loginCheck = function() {
-        self.testFactory.loginTest()
+        let cat = self.getCategories();
+        let username = $scope.login_username;
+        let password = $scope.login_pw;
+        self.testFactory.loginTest(username, password)
         {
         }
     };
+
+    self.getCategories = function () {
+        self.categories = $http.get(api_url + 'getCategories')
+        return self.categories;
+    }
+
+    $scope.register = function () {
+        let username = $scope.register_username;
+        let password = $scope.register_password;
+        let q1 = $scope.register_q1;
+        let a1 = $scope.register_a1;
+        let q2 = $scope.register_q2;
+        let a2 = $scope.register_a2;
+
+        let questions = [q1, q2]
+        let answers = [a1, a2]
+
+        let data = {
+            userName: $scope.register_username,
+            pw: $scope.register_password,
+            fname: $scope.register_fname,
+            lname: $scope.register_lname,
+            city: $scope.register_city,
+            country: $scope.register_country,
+            email: $scope.register_email,
+            interests: $scope.register_category,
+            questions: questions,
+            answers: answers
+        };
+
+        $http.post(api_url + 'registerUser', data, config).then
+        (function successCallback(response) {
+            alert(response.data);
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+    }
 
 }]);
 

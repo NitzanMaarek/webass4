@@ -21,21 +21,55 @@
             <a ng-click="showRegister()" href="">Register</a>
         </form>
     </div>
-    <div id="register" ng-show='registerDiv'>
-        <form>
-            <label>Username:</label> <input id="register_username" type="text">
-            <label>Password:</label> <input id="register_password" type="password">
-            <label>First Name:</label> <input id="register_fname" type="text">
-            <label>Last Name:</label> <input id="register_lname" type="text">
-            <label>City:</label> <input id="register_city" type="text">
-        <!-- NEED TO ADD COUNTRY DROP DOWN MENU-->
-            <label>Email:</label> <input id="register_email" type="email">
-        <!--  NEED TO ADD 2 POIS THAT USER IS INTERESTED IN-->
-
-            <label>Question 1:</label> <input id="register_q1" type="text">
-            <label>Answer 1:</label> <input id="register_a1" type="text">
-            <label>Question 2:</label> <input id="register_q2" type="text">
-            <label>Answer 2:</label> <input id="register_a2" type="text">
+    <div id="register" ng-controller="myController" ng-show='registerDiv'>
+        <form ng-submit="register()">
+            <label>Username:</label> <input id="register_username" type="text" ng-model="register_username">
+            <br>
+            <label>Password:</label> <input id="register_password" type="password" ng-model="register_password">
+            <br>
+            <label>First Name:</label> <input id="register_fname" type="text" ng-model="register_fname">
+            <br>
+            <label>Last Name:</label> <input id="register_lname" type="text" ng-model="register_lname">
+            <br>
+            <label>City:</label> <input id="register_city" type="text" ng-model="register_city">
+            <br>
+            <!-- NEED TO ADD COUNTRY DROP DOWN MENU-->
+            <label>Country:
+                <select id="register_country"  ng-model="register_country">
+                    <option value="australia">Australia</option>
+                    <option value="bolivia">Bolivia</option>
+                    <option value="china">China</option>
+                    <option value="denemark">Denemark</option>
+                    <option value="israel">Israel</option>
+                    <option value="latvia">Latvia</option>
+                    <option value="monaco">Monaco</option>
+                    <option value="norway">Norway</option>
+                    <option value="panama">Panama</option>
+                    <option value="switzerland">Switzerland</option>
+                    <option value="usa">USA</option>
+                </select>
+            </label>
+            <br>
+            <label>Email:</label> <input id="register_email" type="email" ng-model="register_email">
+            <br>
+            <!--  NEED TO ADD 2 POIS THAT USER IS INTERESTED IN-->
+            <label>Interests:
+                <select id="categories" ng-model="register_category">
+                    <option value="Historical Sites">Historical Sites</option>
+                    <option value="Hotels and Hostels">Hotels and Hostels</option>
+                    <option value="Nature">Nature</option>
+                    <option value="Restaurants">Restaurants</option>
+                </select>
+            </label>
+            <br>
+            <label>Question 1:</label> <input id="register_q1" type="text" ng-model="register_q1">
+            <br>
+            <label>Answer 1:</label> <input id="register_a1" type="text" ng-model="register_a1">
+            <br>
+            <label>Question 2:</label> <input id="register_q2" type="text" ng-model="register_q2">
+            <br>
+            <label>Answer 2:</label> <input id="register_a2" type="text" ng-model="register_a2">
+            <br>
             <input type="Submit">
         </form>
     </div>
