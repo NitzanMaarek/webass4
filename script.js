@@ -1,10 +1,36 @@
 let app = angular.module('myApp', []);
 let api_url = 'http://localhost:3000/';
 
-app.controller('myController', ['$scope', '$http', function($scope, $http) {
+app.factory('testFactory',['$http', function($http) {
+    function testFactory() {
+    }
+    testFactory = {
+        loginTest: function () {
+            // let username = $scope.login_username;
+            // let password = $scope.login_pw;
+
+            let data = {
+                userName: "chen",
+                password: "barvaz"
+            };
+
+            let config = {
+                headers: {
+                    'Content-Type': undefined
+                }
+            };
+
+            let token = $http.post('http://localhost:3000/login', JSON.stringify(data), config);
+            return token;
+        },
+    };
+    return testFactory;
+}]);
+
+app.controller('myController', ['$scope', '$http', 'testFactory', function($scope, $http, testFactory) {
 
     self.url = api_url;
-
+    self.testFactory = testFactory;
     $scope.showRegister = function () {
         $scope.loginDiv = false;
         $scope.registerDiv = true;
@@ -34,31 +60,30 @@ app.controller('myController', ['$scope', '$http', function($scope, $http) {
         $window.alert("restore");
     };
 
-    $scope.loginCheck = function(){
-        let username = $scope.login_username;
-        let password = $scope.login_pw;
-
-        let data = {
-            userName: username,
-            password: password
-        };
-
-        let token = $http.post('http://localhost:3000/login', data);
-
-        // let req = {
-        //     method: 'POST',
-        //     url: 'http://localhost:3000/login',
-        //     headers: {
-        //         'content-Type': undefined
-        //     },
-        //     body: {
-        //         userName: username,
-        //         password: password
-        //     }
-        // }
-
-        // let token = $http(req);
-        return token;
+    $scope.loginCheck = function() {
+        self.testFactory.loginTest()
+        {
+        }
     };
 
 }]);
+
+
+            // $scope.loginCheck = function(){
+            //     // let username = $scope.login_username;
+            //     // let password = $scope.login_pw;
+            //     //
+            //     // let data = {
+            //     //     "userName": "chen",
+            //     //     "password": "barvaz"
+            //     // };
+            //     //
+            //     // let config = {
+            //     //     headers : {
+            //     //         'Content-Type': undefined
+            //     //     }
+            //     // };
+            //     //
+            //     // let token = $http.post('http://localhost:3000/login', data, config);
+            //     // return token;
+            // };
