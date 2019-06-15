@@ -39,6 +39,7 @@ app.factory('testFactory',['$http', function($http) {
 
 app.controller('myController', ['$scope', '$http', 'testFactory', function($scope, $http, testFactory) {
 
+    $scope.user_label = "Guest";
     self.token = "";
     self.url = api_url;
     self.testFactory = testFactory;
@@ -90,6 +91,9 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             alert(response.data);
             self.token = response.data;
             alert("Current token is: " + self.token);
+            $scope.registerNav = false;
+            $scope.showSearch();
+            $scope.user_label = username;
         }, function errorCallback(response) {
             alert(response.status);
         });
