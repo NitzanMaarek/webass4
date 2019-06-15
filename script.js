@@ -39,6 +39,7 @@ app.factory('testFactory',['$http', function($http) {
 
 app.controller('myController', ['$scope', '$http', 'testFactory', function($scope, $http, testFactory) {
 
+    self.token = "";
     self.url = api_url;
     self.testFactory = testFactory;
     $scope.showRegister = function () {
@@ -84,31 +85,29 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             }
         };
 
-        self.token = $http.post(api_url + 'login', data, config).then
+        $http.post(api_url + 'login', data, config).then
         (function successCallback(response) {
             alert(response.data);
+            self.token = response.data;
+            alert("Current token is: " + self.token);
         }, function errorCallback(response) {
             alert(response.status);
-        })
-        self.authentication();
+        });
     };
 
-    self.authentication = function() {
-        let data = {
-            "token": self.token
-        };
-
+    $scope.authentication = function() {
+        alert("Current token is: " + self.token);
         var config = {
             headers: {
-                'Content-Type': 'application/json'
+                "x-auth-key": self.token
             }
         };
 
-        let response = $http.post(api_url + 'auth', data, config).then
+        let response = $http.get(api_url + 'auth/nizo', config).then
         (function successCallback(response) {
-            alert(response.data);
+            alert("success");
         }, function errorCallback(response) {
-            alert(response.status);
+            alert("failure");
         });
         alert(response);
     };

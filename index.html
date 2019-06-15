@@ -11,6 +11,7 @@
         <li><a id="nav_login" href="" ng-click="showLogin()">Login</a></li>
         <li><a id="nav_poi_search" href="" ng-click="showSearch()">Search</a></li>
         <li><a id="nav_register" href="" ng-click="showRegister()">Register</a></li>
+
     </menu>
     <div id="login" ng-show='loginDiv' ng-init="loginDiv=true">
         <form ng-submit="loginCheck()">
@@ -78,6 +79,7 @@
     </div>
     <div id="poi_search" ng-show='searchDiv'>
         poi search DIV
+        <button ng-click="authentication()">button</button>
     </div>
     <script src="script.js"></script>
 
