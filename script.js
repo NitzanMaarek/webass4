@@ -12,10 +12,8 @@ app.factory('testFactory',['$http', function($http) {
     }
     testFactory = {
         loginTest: function (username, password) {
-            // let username = $scope.login_username;
-            // let password = $scope.login_pw;
 
-            var data = {
+            let data = {
                 "userName": username,
                 "password": password
             };
@@ -73,34 +71,52 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     };
 
     $scope.loginCheck = function() {
-        let cat = self.getCategories();
         let username = $scope.login_username;
         let password = $scope.login_pw;
-        // var req = {
-        //     method:'POST',
-        //     url:'http://localhost:3000/login',
-        //     headers:{
-        //         'Content-Type': undefined
-        //     },
-        //     data:{userName: username, password: password}
-        // };
-        // let token = $http(req).then
-        // (function successCallback(response) {
-        //     alert(response.data);
-        // }, function errorCallback(response) {
-        //     alert(response.status);
-        // });
-        // alert(token);
-        self.testFactory.loginTest(username, password)
-        // {
-        // }
+        let data = {
+            "userName": username,
+            "password": password
+        };
 
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        self.token = $http.post(api_url + 'login', data, config).then
+        (function successCallback(response) {
+            alert(response.data);
+        }, function errorCallback(response) {
+            alert(response.status);
+        })
+        self.authentication();
+    };
+
+    self.authentication = function() {
+        let data = {
+            "token": self.token
+        };
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        let response = $http.post(api_url + 'auth', data, config).then
+        (function successCallback(response) {
+            alert(response.data);
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+        alert(response);
     };
 
     self.getCategories = function () {
         self.categories = $http.get(api_url + 'getCategories')
         return self.categories;
-    }
+    };
 
     $scope.register = function () {
         let username = $scope.register_username;
@@ -135,23 +151,3 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     }
 
 }]);
-
-
-            // $scope.loginCheck = function(){
-            //     // let username = $scope.login_username;
-            //     // let password = $scope.login_pw;
-            //     //
-            //     // let data = {
-            //     //     "userName": "chen",
-            //     //     "password": "barvaz"
-            //     // };
-            //     //
-            //     // let config = {
-            //     //     headers : {
-            //     //         'Content-Type': undefined
-            //     //     }
-            //     // };
-            //     //
-            //     // let token = $http.post('http://localhost:3000/login', data, config);
-            //     // return token;
-            // };

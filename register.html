@@ -1,0 +1,35 @@
+<div id="register" ng-controller="myController" ng-show='registerDiv'>
+    <form>
+        <label>Username:</label> <input id="register_username" type="text">
+        <label>Password:</label> <input id="register_password" type="password">
+        <label>First Name:</label> <input id="register_fname" type="text">
+        <label>Last Name:</label> <input id="register_lname" type="text">
+        <label>City:</label> <input id="register_city" type="text">
+        <!-- NEED TO ADD COUNTRY DROP DOWN MENU-->
+        <label>
+            <select id="register_country" >
+                <option value="australia">Australia</option>
+                <option value="bolivia">Bolivia</option>
+                <option value="china">China</option>
+                <option value="denemark">Denemark</option>
+                <option value="israel">Israel</option>
+                <option value="latvia">Latvia</option>
+                <option value="monaco">Monaco</option>
+                <option value="norway">Norway</option>
+                <option value="panama">Panama</option>
+                <option value="switzerland">Switzerland</option>
+                <option value="usa">USA</option>
+            </select>
+        </label>
+        <label>Email:</label> <input id="register_email" type="email">
+        <!--  NEED TO ADD 2 POIS THAT USER IS INTERESTED IN-->
+        <label>
+            <select id="q1_register" ng-model="myApp" ng-options="item for item in myController.getCategories()" required></select>
+        </label>
+        <label>Question 1:</label> <input id="register_q1" type="text">
+        <label>Answer 1:</label> <input id="register_a1" type="text">
+        <label>Question 2:</label> <input id="register_q2" type="text">
+        <label>Answer 2:</label> <input id="register_a2" type="text">
+        <input type="Submit">
+    </form>
+</div>
