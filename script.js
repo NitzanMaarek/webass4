@@ -15,19 +15,19 @@ app.factory('testFactory',['$http', function($http) {
             // let username = $scope.login_username;
             // let password = $scope.login_pw;
 
-            let data = {
-                userName: username,
-                password: password
+            var data = {
+                "userName": username,
+                "password": password
             };
 
-            let config = {
+            var config = {
                 headers: {
-                    'Content-Type': undefined
+                    'Content-Type': 'application/json'
                 }
             };
             alert(username+" : "+password);
 
-            let token = $http.post('http://localhost:3000/login', JSON.stringify(data), config).then
+            let token = $http.post('http://localhost:3000/login', data, config).then
             (function successCallback(response) {
                 alert(response.data);
             }, function errorCallback(response) {
@@ -76,9 +76,25 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         let cat = self.getCategories();
         let username = $scope.login_username;
         let password = $scope.login_pw;
+        // var req = {
+        //     method:'POST',
+        //     url:'http://localhost:3000/login',
+        //     headers:{
+        //         'Content-Type': undefined
+        //     },
+        //     data:{userName: username, password: password}
+        // };
+        // let token = $http(req).then
+        // (function successCallback(response) {
+        //     alert(response.data);
+        // }, function errorCallback(response) {
+        //     alert(response.status);
+        // });
+        // alert(token);
         self.testFactory.loginTest(username, password)
-        {
-        }
+        // {
+        // }
+
     };
 
     self.getCategories = function () {
