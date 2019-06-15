@@ -99,17 +99,16 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         alert("Current token is: " + self.token);
         var config = {
             headers: {
-                "x-auth-key": self.token
+                "x-auth-token": self.token
             }
         };
 
-        let response = $http.get(api_url + 'auth/nizo', config).then
+        $http.get(api_url + 'auth/nizo', {headers:{"x-auth-token": self.token}}).then
         (function successCallback(response) {
-            alert("success");
+            alert("success, response message is: " + response.data);
         }, function errorCallback(response) {
-            alert("failure");
+            alert("failure, response message is: " + response.data);
         });
-        alert(response);
     };
 
     self.getCategories = function () {
