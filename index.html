@@ -75,13 +75,48 @@
         </form>
     </div>
     <div id="restore_pw" ng-show='restorePWDiv'>
-        Restore PW DIV
+        <form>
+            <label>Username:</label> <input id="restore_pw_username" type="text" ng-model="restore_pw_username">
+            <button ng-click="getSecurityQuestions()">Show Security Questions</button>
+            <br>
+            <label>Question #1: {{restore_pw_q}}</label> <input id="restore_pw_a1" type="text" ng-model="restore_pw_a" placeholder="Anser #1">
+            <br>
+            <button ng-click="restorePassword()">Restore Password</button>
+            <br>
+            <label ng-model="restore_pw_password">Password: {{restore_pw_password}}</label>
+        </form>
     </div>
     <div id="poi_search" ng-show='searchDiv'>
         poi search DIV
         <button ng-click="authentication()">button</button>
     </div>
     <div id="random_pois"></div>
+        <table id="poiTable" border=1 width=100px>
+            <tbody>
+                <tr>
+                    <td>
+                        <label ng-model="first_poi_home">{{first_poi_home}}</label>
+                    </td>
+                    <td>
+                        <label ng-model="second_poi_home">{{second_poi_home}}</label>
+                    </td>
+                    <td>
+                        <label ng-model="third_poi_home">{{third_poi_home}}</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="{{first_poi_image}}" width="300" height="300">
+                    </td>
+                    <td>
+                        <img src={{second_poi_image}} width="300" height="300">
+                    </td>
+                    <td>
+                        <img src={{third_poi_image}} width="300" height="300">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     <script src="script.js"></script>
 
 </body>

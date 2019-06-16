@@ -39,6 +39,9 @@ app.factory('testFactory',['$http', function($http) {
 
 app.controller('myController', ['$scope', '$http', 'testFactory', function($scope, $http, testFactory) {
 
+    showRandomPOIS();
+    $scope.restore_pw_q = "";
+    $scope.restore_pw_username = "";
     $scope.user_label = "Guest";
     self.token = "";
     self.url = api_url;
@@ -48,21 +51,18 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.registerDiv = true;
         $scope.restorePWDiv = false;
         $scope.searchDiv = false;
-        $window.alert("reg");
     };
     $scope.showLogin = function () {
         $scope.loginDiv = true;
         $scope.registerDiv = false;
         $scope.restorePWDiv = false;
         $scope.searchDiv = false;
-        $window.alert("login");
     };
     $scope.showSearch = function () {
         $scope.loginDiv = false;
         $scope.registerDiv = false;
         $scope.restorePWDiv = false;
         $scope.searchDiv = true;
-        alert("search");
     };
     $scope.showRestorePW = function () {
         $scope.loginDiv = false;
@@ -71,6 +71,49 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.searchDiv = false;
         $window.alert("restore");
     };
+
+    $scope.getSecurityQuestions = function(){
+        let userName = $scope.restore_pw_username;
+        $http.get(api_url + 'getUserSecurityQuestions/' + userName).then
+        (function successCallback(response) {
+            // alert(response.data);
+            $scope.restore_pw_q = response.data[0]['question'];
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+    };
+
+    $scope.restore_pw_a = "";
+
+    $scope.restorePassword = function(){
+        let answer = $scope.restore_pw_a;
+        let userName = $scope.restore_pw_username;
+        let question = $scope.restore_pw_q;
+        alert("Security question is: " + question);
+        $http.get(api_url + 'restorePassword/' + userName + "/" + answer + "/" + question).then
+        (function successCallback(response) {
+            // alert(response.data);
+            $scope.restore_pw_password = response.data[0]['passא'];
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+    };
+
+    function showRandomPOIS(){
+        let numOfPois = "3";
+        $http.get(api_url + 'getRandomPOI/' + numOfPois).then
+        (function successCallback(response) {
+            $scope.first_poi_home = response.data[0]['poiName'];
+            $scope.second_poi_home = response.data[1]['poiName'];
+            $scope.third_poi_home = response.data[2]['poiName'];
+            $scope.first_poi_image = response.data[0]['image'];
+            $scope.second_poi_image = response.data[1]['image'];
+            $scope.third_poi_image = response.data[2]['image'];
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+    }
+
 
     $scope.loginCheck = function() {
         let username = $scope.login_username;
@@ -149,6 +192,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         }, function errorCallback(response) {
             alert(response.status);
         });
-    }
+    };
+
 
 }]);
