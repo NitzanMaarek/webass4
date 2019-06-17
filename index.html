@@ -10,7 +10,8 @@
     <menu id="menu_bar">
         <li><a id="nav_login" href="" ng-click="showLogin()">Login</a></li>
         <li><a id="nav_poi_search" href="" ng-click="showSearch()">Search</a></li>
-        <li><a id="nav_register" href="" ng-click="showRegister()" ng-show='registerNav' ng-init="registerNav=true">Register</a></li>
+        <li ng-show='registerNav' ng-init="registerNav=true"><a id="nav_register" href="" ng-click="showRegister()">Register</a></li>
+        <li ng-show='favoritesNav' ng-init="favoritesNav=false"><a id="nav_favorites" href="" ng-click="showFavorites()">Favorites: {{numOfFavorites}}</a></li>
         <label ng-model="user_label">Hello {{user_label}}</label>
     </menu>
     <div id="login" ng-show='loginDiv' ng-init="loginDiv=true">

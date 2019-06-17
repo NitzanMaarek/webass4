@@ -43,6 +43,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     $scope.restore_pw_q = "";
     $scope.restore_pw_username = "";
     $scope.user_label = "Guest";
+    $scope.numOfFavorites = 0;
     self.token = "";
     self.url = api_url;
     self.testFactory = testFactory;
@@ -98,6 +99,16 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             alert(response.status);
         });
     };
+
+    function getAndShowNumberOfFavorites(){
+        let userName = $scope.user_label;
+        $http.get(api_url + 'auth/getNumberOfFavorites/' + userName,{headers:{"x-auth-token": self.token}}).then
+        (function successCallback(response) {
+            $scope.numOfFavorites = response.data[0]['count'];
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+    }
 
     function getAndShowPopularPois(){
         $http.get(api_url + 'getRandomPOI/100').then
@@ -180,9 +191,11 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             self.token = response.data;
             alert("Current token is: " + self.token);
             $scope.registerNav = false;
+            $scope.favoritesNav = true;
             $scope.user_label = username;
             getAndShowPopularPois();
             showLastTwoFavoritePois();
+            getAndShowNumberOfFavorites();
             $scope.showSearch();
             $scope.showLoggedInPoiTable = true;
         }, function errorCallback(response) {
