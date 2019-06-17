@@ -113,6 +113,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
                 else{
                     $scope.popup_poi_first_review = 'SHOW first REVIEW HERE :0';
                     $scope.popup_poi_second_review = "SHOW second REVIEW HERE :0";
+                    //TODO: Need to use the review id to get from DB the review content.
                 }
             }
         }, function errorCallback(response) {

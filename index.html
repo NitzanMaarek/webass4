@@ -124,9 +124,9 @@
     <div id="favorite_pois" ng-show="favoritesDiv">
         <h1 align="center"><u>Favorite points of interest</u></h1>
         <div  ng-repeat="poi in userFavoritePois">
-            <label>{{poi.poiName}}</label>
+            <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
             <br>
-            <img src={{poi.image}} width="150" height="150">
+            <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
         </div>
     </div>
     <div id="random_pois"></div>
