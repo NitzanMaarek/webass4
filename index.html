@@ -87,8 +87,38 @@
         </form>
     </div>
     <div id="poi_search" ng-show='searchDiv'>
-        poi search DIV
-        <button ng-click="authentication()">button</button>
+        <table id="loggedInUserPoisTable" border=0 width="1000px" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">
+            <tr>
+                <td colspan="2" align="center">Popular Points of Interests</td>
+                <td colspan="2" align="center">Favorite Points of Interests
+                <br>
+                    <label ng-show="showNoFavoritesMessage" ng-init="showNoFavoritesMessage=true">No favorites to show.</label>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <label ng-model="loggedInUserPopularLbl1">{{loggedInUserPopularLbl1}}</label>
+                    <br>
+                    <img src="{{loggedInUserPopularImg1}}" width="150" height="150">
+
+                </td>
+                <td align="center">
+                    <label ng-model="loggedInUserPopularLbl2">{{loggedInUserPopularLbl2}}</label>
+                    <br>
+                    <img src="{{loggedInUserPopularImg2}}" width="150" height="150">
+                </td>
+                <td align="center">
+                    <label ng-model="loggedInUserFavoriteLbl1">{{loggedInUserFavoriteLbl1}}</label>
+                    <br>
+                    <img src="{{loggedInUserFavoriteImg1}}" width="150" height="150">
+                </td>
+                <td align="center">
+                    <label ng-model="loggedInUserFavoriteLbl2">{{loggedInUserFavoriteLbl2}}</label>
+                    <br>
+                    <img src="{{loggedInUserFavoriteImg2}}" width="150" height="150">
+                </td>
+            </tr>
+        </table>        <button ng-click="authentication()">button</button>
     </div>
     <div id="random_pois"></div>
         <table id="poiTable" border=1 width=100px>

@@ -99,6 +99,51 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         });
     };
 
+    function getAndShowPopularPois(){
+        $http.get(api_url + 'getRandomPOI/100').then
+        (function successCallback(response) {
+            // alert(response.data);
+            let topTwoRankedPois = getTwoTopRankedPois(response.data);
+            $scope.loggedInUserPopularLbl1 = topTwoRankedPois[0]['poiName'];
+            $scope.loggedInUserPopularLbl2 = topTwoRankedPois[1]['poiName'];
+            $scope.loggedInUserPopularImg1 = topTwoRankedPois[0]['image'];
+            $scope.loggedInUserPopularImg2 = topTwoRankedPois[1]['image'];
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+    }
+
+    function getTwoTopRankedPois(pois){
+        let ans = [];
+        pois.sort(function(a, b){
+            return parseFloat(a.poiRank) - parseFloat(b.poiRank);
+        });
+        ans.push(pois[0]);
+        ans.push(pois[1]);
+        return ans;
+    }
+
+    function showLastTwoFavoritePois(){
+        let userName = $scope.user_label;
+        $http.get(api_url + 'auth/getUserFavoriteInterests/' + userName, {headers:{"x-auth-token": self.token}}).then
+        (function successCallback(response) {
+            let dataLength = response.data.length;
+            if(dataLength > 0){
+                $scope.showNoFavoritesMessage = false;
+                $scope.loggedInUserFavoriteLbl1 = response.data[dataLength - 1]['poiName'];
+                $scope.loggedInUserFavoriteImg1 = response.data[dataLength - 1]['image'];
+                if(dataLength > 1){
+                    $scope.loggedInUserFavoriteLbl2 = response.data[dataLength - 2]['poiName'];
+                    $scope.loggedInUserFavoriteImg2 = response.data[dataLength - 2]['image'];
+                }
+            }
+        }, function errorCallback(response) {
+            alert("failure, response message is: " + response.data);
+        });
+        //getUserFavoriteInterests
+
+    }
+
     function showRandomPOIS(){
         let numOfPois = "3";
         $http.get(api_url + 'getRandomPOI/' + numOfPois).then
@@ -135,8 +180,11 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             self.token = response.data;
             alert("Current token is: " + self.token);
             $scope.registerNav = false;
-            $scope.showSearch();
             $scope.user_label = username;
+            getAndShowPopularPois();
+            showLastTwoFavoritePois();
+            $scope.showSearch();
+            $scope.showLoggedInPoiTable = true;
         }, function errorCallback(response) {
             alert(response.status);
         });
