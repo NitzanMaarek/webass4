@@ -93,7 +93,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $http.get(api_url + 'restorePassword/' + userName + "/" + answer + "/" + question).then
         (function successCallback(response) {
             // alert(response.data);
-            $scope.restore_pw_password = response.data[0]['passא'];
+            $scope.restore_pw_password = response.data[0]['pass'];
         }, function errorCallback(response) {
             alert(response.status);
         });
