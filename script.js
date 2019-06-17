@@ -52,25 +52,40 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.registerDiv = true;
         $scope.restorePWDiv = false;
         $scope.searchDiv = false;
+        $scope.favoritesDiv = false;
     };
     $scope.showLogin = function () {
-        $scope.loginDiv = true;
-        $scope.registerDiv = false;
-        $scope.restorePWDiv = false;
-        $scope.searchDiv = false;
+        if($scope.user_label !== "Guest"){
+            alert("You are already logged in.");
+        }
+        else {
+            $scope.loginDiv = true;
+            $scope.registerDiv = false;
+            $scope.restorePWDiv = false;
+            $scope.searchDiv = false;
+            $scope.favoritesDiv = false;
+        }
     };
     $scope.showSearch = function () {
         $scope.loginDiv = false;
         $scope.registerDiv = false;
         $scope.restorePWDiv = false;
         $scope.searchDiv = true;
+        $scope.favoritesDiv = false;
     };
     $scope.showRestorePW = function () {
         $scope.loginDiv = false;
         $scope.registerDiv = false;
         $scope.restorePWDiv = true;
         $scope.searchDiv = false;
-        $window.alert("restore");
+        $scope.favoritesDiv = false;
+    };
+    $scope.showFavorites = function () {
+        $scope.loginDiv = false;
+        $scope.registerDiv = false;
+        $scope.restorePWDiv = false;
+        $scope.searchDiv = false;
+        $scope.favoritesDiv = true;
     };
 
     $scope.getSecurityQuestions = function(){
@@ -187,9 +202,9 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
 
         $http.post(api_url + 'login', data, config).then
         (function successCallback(response) {
-            alert(response.data);
+            // alert(response.data);
             self.token = response.data;
-            alert("Current token is: " + self.token);
+            // alert("Current token is: " + self.token);
             $scope.registerNav = false;
             $scope.favoritesNav = true;
             $scope.user_label = username;
