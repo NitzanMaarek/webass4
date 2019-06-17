@@ -86,6 +86,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.restorePWDiv = false;
         $scope.searchDiv = false;
         $scope.favoritesDiv = true;
+        getAndShowFavorites();
+
     };
 
     $scope.getSecurityQuestions = function(){
@@ -114,6 +116,28 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             alert(response.status);
         });
     };
+
+    function getAndShowFavorites(){
+        let userName = $scope.user_label;
+        $scope.userFavoritePois = ['blaa!'];
+        $scope.userFavoritePoiNames = ['bla'];
+        $scope.userFavoritePoiImages = ['blaaa'];
+        $http.get(api_url + 'auth/getUserFavoriteInterests/' + userName,{headers:{"x-auth-token": self.token}}).then
+        (function successCallback(response) {
+            $scope.userFavoritePois.splice(0,1);
+            $scope.userFavoritePois = response.data;
+            // alert(response.data.length + "length");
+            // for(i=0; i < response.data; i++){
+            //     alert('entered for');
+            //     $scope.userFavoritePoiNames[i] = response.data[i]['poiName'];
+            //     alert('poiName is:' + response.data[i]['poiName']);
+            //     $scope.userFavoritePoiImages[i] = response.data[i]['image'];
+            //     alert('poi image is:' + $scope.userFavoritePoiImages[i]);
+            // }
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+    }
 
     function getAndShowNumberOfFavorites(){
         let userName = $scope.user_label;

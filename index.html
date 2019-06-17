@@ -122,7 +122,12 @@
         </table>        <button ng-click="authentication()">button</button>
     </div>
     <div id="favorite_pois" ng-show="favoritesDiv">
-        kaka
+        <h1 align="center"><u>Favorite points of interest</u></h1>
+        <div  ng-repeat="poi in userFavoritePois">
+            <label>{{poi.poiName}}</label>
+            <br>
+            <img src={{poi.image}} width="150" height="150">
+        </div>
     </div>
     <div id="random_pois"></div>
         <table id="poiTable" border=1 width=100px>
