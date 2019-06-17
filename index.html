@@ -4,6 +4,7 @@
 <!--    <meta charset="UTF-8">-->
 <!--    <title>Title</title>-->
 <!--</head>-->
+<link href="style.css" rel="stylesheet" type="text/css">
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-route/angular-route.js"></script>
 <body ng-app="myApp" ng-controller="myController as myCtrl">
@@ -98,25 +99,24 @@
             </tr>
             <tr>
                 <td align="center">
-                    <label ng-model="loggedInUserPopularLbl1">{{loggedInUserPopularLbl1}}</label>
+                    <label ng-model="loggedInUserPopularLbl1" ng-click="popPoiInfo(loggedInUserPopularLbl1)">{{loggedInUserPopularLbl1}}</label>
                     <br>
-                    <img src="{{loggedInUserPopularImg1}}" width="150" height="150">
-
+                    <img src="{{loggedInUserPopularImg1}}" ng-click="popPoiInfo(loggedInUserPopularLbl1)" width="150" height="150">
                 </td>
                 <td align="center">
-                    <label ng-model="loggedInUserPopularLbl2">{{loggedInUserPopularLbl2}}</label>
+                    <label ng-model="loggedInUserPopularLbl2" ng-click="popPoiInfo(loggedInUserPopularLbl2)">{{loggedInUserPopularLbl2}}</label>
                     <br>
-                    <img src="{{loggedInUserPopularImg2}}" width="150" height="150">
+                    <img src="{{loggedInUserPopularImg2}}" ng-click="popPoiInfo(loggedInUserPopularLbl2)" width="150" height="150">
                 </td>
                 <td align="center">
-                    <label ng-model="loggedInUserFavoriteLbl1">{{loggedInUserFavoriteLbl1}}</label>
+                    <label ng-model="loggedInUserFavoriteLbl1" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)">{{loggedInUserFavoriteLbl1}}</label>
                     <br>
-                    <img src="{{loggedInUserFavoriteImg1}}" width="150" height="150">
+                    <img src="{{loggedInUserFavoriteImg1}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" width="150" height="150">
                 </td>
                 <td align="center">
-                    <label ng-model="loggedInUserFavoriteLbl2">{{loggedInUserFavoriteLbl2}}</label>
+                    <label ng-model="loggedInUserFavoriteLbl2" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)">{{loggedInUserFavoriteLbl2}}</label>
                     <br>
-                    <img src="{{loggedInUserFavoriteImg2}}" width="150" height="150">
+                    <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" width="150" height="150">
                 </td>
             </tr>
         </table>        <button ng-click="authentication()">button</button>
@@ -134,28 +134,46 @@
             <tbody>
                 <tr>
                     <td>
-                        <label ng-model="first_poi_home">{{first_poi_home}}</label>
+                        <label ng-model="first_poi_home" ng-click="popPoiInfo(first_poi_home)">{{first_poi_home}}</label>
                     </td>
                     <td>
-                        <label ng-model="second_poi_home">{{second_poi_home}}</label>
+                        <label ng-model="second_poi_home" ng-click="popPoiInfo(second_poi_home)">{{second_poi_home}}</label>
                     </td>
                     <td>
-                        <label ng-model="third_poi_home">{{third_poi_home}}</label>
+                        <label ng-model="third_poi_home" ng-click="popPoiInfo(third_poi_home)">{{third_poi_home}}</label>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <img src="{{first_poi_image}}" width="300" height="300">
+                        <img src="{{first_poi_image}}" width="300" height="300" ng-click="popPoiInfo(first_poi_home)">
                     </td>
                     <td>
-                        <img src={{second_poi_image}} width="300" height="300">
+                        <img src={{second_poi_image}} width="300" height="300" ng-click="popPoiInfo(second_poi_home)">
                     </td>
                     <td>
-                        <img src={{third_poi_image}} width="300" height="300">
+                        <img src={{third_poi_image}} width="300" height="300" ng-click="popPoiInfo(third_poi_home)">
                     </td>
                 </tr>
             </tbody>
         </table>
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>{{popup_poi_name}}</h2>
+            </div>
+            <div class="modal-body">
+                <img src="{{popup_poi_image}}" width="100" height="100">
+                <p>Enter poi description here.</p>
+                <p>First review: {{popup_poi_first_review}}</p>
+                <p>Second review: {{popup_poi_second_review}}</p>
+            </div>
+            <div class="modal-footer">
+                <h3>Views: {{popup_poi_views}}  Rank: {{popup_poi_rank}}</h3>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 
 </body>

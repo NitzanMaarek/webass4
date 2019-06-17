@@ -40,6 +40,8 @@ app.factory('testFactory',['$http', function($http) {
 app.controller('myController', ['$scope', '$http', 'testFactory', function($scope, $http, testFactory) {
 
     showRandomPOIS();
+    let modal = document.getElementById('myModal');
+    let span = document.getElementsByClassName("close")[0];
     $scope.restore_pw_q = "";
     $scope.restore_pw_username = "";
     $scope.user_label = "Guest";
@@ -88,6 +90,57 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.favoritesDiv = true;
         getAndShowFavorites();
 
+    };
+
+    $scope.popPoiInfo = function(poiName){
+        $scope.popup_poi_name = poiName;
+        $http.get(api_url + 'getInterestByName/' + poiName).then
+        (function successCallback(response) {
+            if(response.data.length > 0){
+                let poi = response.data[0];
+                $scope.popup_poi_image = poi['image'];
+                $scope.popup_poi_views = poi['viewsNum'];
+                let rank = poi['poiRank'];
+                rank = rank/5;
+                $scope.popup_poi_rank = rank.toString();
+                if(poi['lastReviewID'] === -1){
+                    $scope.popup_poi_first_review = $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
+                }
+                else if(poi['beforeLastReviewID'] === -1){
+                    $scope.popup_poi_first_review = 'SHOW FIRST REVIEW HERE :0';
+                    $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
+                }
+                else{
+                    $scope.popup_poi_first_review = 'SHOW first REVIEW HERE :0';
+                    $scope.popup_poi_second_review = "SHOW second REVIEW HERE :0";
+                }
+            }
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+
+
+        modal.style.display = "block";
+    };
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    };
+    //might delete later
+    document.onkeydown = function(e) {
+        e = e || window.event;
+        var esc = false;
+        if ("key" in e)
+        {
+            esc = (e.key === "Esc" || e.key === "Escape");
+        }
+        else
+        {
+            esc = (e.keyCode === 27);
+        }
+        if (esc) {
+            modal.style.display = "none";
+        }
     };
 
     $scope.getSecurityQuestions = function(){
