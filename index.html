@@ -89,6 +89,15 @@
         </form>
     </div>
     <div id="poi_search" ng-show='searchDiv'>
+        <input placeholder="Search by name" ng-model="searchInputText">
+        <button ng-click="searchCategoriesByName()">Search</button>
+
+        <div  ng-show="searchedPoiDiv">
+            <label ng-click="popPoiInfo(searchResultPoiName)" ng-model="searchResultPoiName">{{searchResultPoiName}}</label>
+            <br>
+            <img src={{searchResultPoiImage}} ng-click="popPoiInfo(searchResultPoiName)" width="150" height="150">
+        </div>
+
         <table id="loggedInUserPoisTable" border=0 width="1000px" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">
             <tr>
                 <td colspan="2" align="center">Popular Points of Interests</td>
@@ -119,12 +128,12 @@
                     <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" width="150" height="150">
                 </td>
             </tr>
-        </table>        <button ng-click="authentication()">button</button>
+        </table>
     </div>
     <div id="favorite_pois" ng-show="favoritesDiv">
 
         <h1 align="center"><u>Favorite points of interest</u></h1>
-        <button>Sort by rank from highest to lowest</button>
+        <button ng-click="sortByFavoritesRank()">Sort by rank from highest to lowest</button>
         <br>
         <button ng-click="sortByFavoritesCategories()">Sort by categories</button>
 

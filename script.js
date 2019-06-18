@@ -74,6 +74,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.restorePWDiv = false;
         $scope.searchDiv = true;
         $scope.favoritesDiv = false;
+        $scope.searchedPoiDiv = false;
     };
     $scope.showRestorePW = function () {
         $scope.loginDiv = false;
@@ -81,6 +82,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.restorePWDiv = true;
         $scope.searchDiv = false;
         $scope.favoritesDiv = false;
+        $scope.searchedPoiDiv = false;
     };
     $scope.showFavorites = function () {
         $scope.loginDiv = false;
@@ -89,6 +91,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.searchDiv = false;
         $scope.favoritesDiv = true;
         $scope.randomFavoritesDiv = true;
+        $scope.searchedPoiDiv = false;
         getAndShowFavorites();
     };
 
@@ -199,6 +202,31 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         }
     };
 
+    $scope.sortByFavoritesRank = function(){
+        $scope.byCategoryFavoritesDiv = false;
+        $scope.randomFavoritesDiv = true;
+        $scope.userFavoritePois.sort(function(a, b){
+            return b.poiRank - a.poiRank;
+        });
+    };
+
+    $scope.searchCategoriesByName = function(){
+        $scope.searchedPois = ['bla'];
+        let name = $scope.searchInputText;
+        $scope.searchedPoiDiv = true;
+        $http.get(api_url + 'getInterestByname/' + name).then
+        (function successCallback(response){
+            if(response.data.length > 0){
+                $scope.searchedPois.splice(0,1);
+                // $scope.searchedPois = response.data[0];
+                $scope.searchResultPoiName = response.data[0]['poiName'];
+                $scope.searchResultPoiImage = response.data[0]['image'];
+            }
+        }, function errorCallback(response){
+            alert(response.status);
+        });
+    };
+
     function getAndShowFavorites(){
         let userName = $scope.user_label;
         $scope.userFavoritePois = ['blaa!'];
@@ -248,7 +276,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     function getTwoTopRankedPois(pois){
         let ans = [];
         pois.sort(function(a, b){
-            return parseFloat(a.poiRank) - parseFloat(b.poiRank);
+            return b.poiRank - a.poiRank;
         });
         ans.push(pois[0]);
         ans.push(pois[1]);
