@@ -88,8 +88,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.restorePWDiv = false;
         $scope.searchDiv = false;
         $scope.favoritesDiv = true;
+        $scope.randomFavoritesDiv = true;
         getAndShowFavorites();
-
     };
 
     $scope.popPoiInfo = function(poiName){
@@ -169,6 +169,34 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         }, function errorCallback(response) {
             alert(response.status);
         });
+    };
+
+    /**
+     * Function basically only sorts favorite poi categories and assigns them to array: userFavoritePoisCategories
+     * Assumption: $scope.userFavoritePois is not empty
+     */
+    $scope.sortByFavoritesCategories = function(){
+        $scope.byCategoryFavoritesDiv = true;
+        $scope.randomFavoritesDiv = false;
+        $scope.userFavoritePoisCategories = {'bla':'kaka'};
+        let categories = [];
+        delete $scope.userFavoritePoisCategories['bla'];
+        for(let i=0; i<$scope.userFavoritePois.length; i++){
+            let category = $scope.userFavoritePois[i]['categoryName'];
+            if(!categories.includes(category)){
+                categories.push(category);
+            }
+        }
+        categories.sort();
+        for(let i=0; i<categories.length; i++){
+            $scope.userFavoritePoisCategories[categories[i]] = [];
+            for(let j=0; j<$scope.userFavoritePois.length; j++){
+                let category = $scope.userFavoritePois[j]['categoryName'];
+                if(categories[i] === category){
+                    $scope.userFavoritePoisCategories[category].push($scope.userFavoritePois[j]);
+                }
+            }
+        }
     };
 
     function getAndShowFavorites(){

@@ -122,12 +122,27 @@
         </table>        <button ng-click="authentication()">button</button>
     </div>
     <div id="favorite_pois" ng-show="favoritesDiv">
+
         <h1 align="center"><u>Favorite points of interest</u></h1>
-        <div  ng-repeat="poi in userFavoritePois">
+        <button>Sort by rank from highest to lowest</button>
+        <br>
+        <button ng-click="sortByFavoritesCategories()">Sort by categories</button>
+
+        <div  ng-show="randomFavoritesDiv" ng-repeat="poi in userFavoritePois">
             <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
             <br>
             <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
         </div>
+
+        <div ng-show="byCategoryFavoritesDiv" ng-repeat="(key ,poiList) in userFavoritePoisCategories">
+            <h1><u>{{key}}:</u></h1>
+            <div ng-repeat="poi in poiList">
+                <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
+                <br>
+                <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
+            </div>
+        </div>
+
     </div>
     <div id="random_pois"></div>
         <table id="poiTable" border=1 width=100px>
