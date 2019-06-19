@@ -49,6 +49,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     self.token = "";
     self.url = api_url;
     self.testFactory = testFactory;
+    $scope.userLoggedInFlag = false;
     $scope.showRegister = function () {
         $scope.loginDiv = false;
         $scope.registerDiv = true;
@@ -75,6 +76,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.searchDiv = true;
         $scope.favoritesDiv = false;
         $scope.searchedPoiDiv = false;
+        $scope.searchResultCategory = false;
+
     };
     $scope.showRestorePW = function () {
         $scope.loginDiv = false;
@@ -99,21 +102,20 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.popup_poi_name = poiName;
         $http.get(api_url + 'getInterestByName/' + poiName).then
         (function successCallback(response) {
-            if(response.data.length > 0){
+            if(response.data.length > 0) {
+                setFavoriteMarkValue(poiName);
                 let poi = response.data[0];
                 $scope.popup_poi_image = poi['image'];
                 $scope.popup_poi_views = poi['viewsNum'];
                 let rank = poi['poiRank'];
-                rank = rank/5;
+                rank = rank / 5;
                 $scope.popup_poi_rank = rank.toString();
-                if(poi['lastReviewID'] === -1){
+                if (poi['lastReviewID'] === -1) {
                     $scope.popup_poi_first_review = $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
-                }
-                else if(poi['beforeLastReviewID'] === -1){
+                } else if (poi['beforeLastReviewID'] === -1) {
                     $scope.popup_poi_first_review = 'SHOW FIRST REVIEW HERE :0';
                     $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
-                }
-                else{
+                } else {
                     $scope.popup_poi_first_review = 'SHOW first REVIEW HERE :0';
                     $scope.popup_poi_second_review = "SHOW second REVIEW HERE :0";
                     //TODO: Need to use the review id to get from DB the review content.
@@ -126,6 +128,24 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
 
         modal.style.display = "block";
     };
+
+    function setFavoriteMarkValue(poiName){
+        $scope.isPoiFavoritedValue = false;
+        if($scope.userLoggedInFlag) {
+            let userName = $scope.user_label;
+            $http.get(api_url + 'auth/getUserFavoriteInterests/' + userName, {headers: {"x-auth-token": self.token}}).then
+            (function successCallback(response) {
+                if (response.data.length > 0) {
+                    for (let i = 0; i < response.data.length && !$scope.isPoiFavoritedValue; i++)
+                        if (response.data[i]['poiName'] === poiName) {
+                            $scope.isPoiFavoritedValue = true;
+                        }
+                }
+            }, function errorCallback(response) {
+                alert(response.status);
+            });
+        }
+    }
 
     span.onclick = function() {
         modal.style.display = "none";
@@ -210,17 +230,65 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         });
     };
 
-    $scope.searchCategoriesByName = function(){
+    $scope.favoriteCheckboxClicked = function(poiName){
+        let value = $scope.isPoiFavoritedValue;
+        let userName = $scope.user_label;
+        let data = {
+            "poiName": poiName,
+            "userName": userName
+        };
+
+        var config = {
+            headers: {
+                'x-auth-token': self.token,
+                'Content-Type': 'application/json'
+            }
+        };
+        if(!$scope.isPoiFavoritedValue){ //Already favorited -> remove it.
+            // auth/removeInterestFromFavorites
+            $http.post(api_url + 'auth/removeInterestFromFavorites', data, config).then
+            (function successCallback(response) {
+                alert(poiName + ' removed from your favorites!');
+                getAndShowNumberOfFavorites();
+                // $scope.isPoiFavoritedValue = !$scope.isPoiFavoritedValue;
+            }, function errorCallback(response) {
+                alert(response.status);
+            });
+        }
+        else{   //not favorited? add it.
+            // auth/addInterestToFavorites
+            $http.post(api_url + 'auth/addInterestToFavorites', data, config).then
+            (function successCallback(response) {
+                alert(poiName + ' added to your favorites!');
+                getAndShowNumberOfFavorites();
+                // $scope.isPoiFavoritedValue = !$scope.isPoiFavoritedValue;
+            }, function errorCallback(response) {
+                alert(response.status);
+            });
+        }
+    };
+
+    $scope.showSearchResultCategory = function(){
+      $scope.searchResultCategory = true;
+    };
+
+    $scope.searchPoisByName = function(){
         $scope.searchedPois = ['bla'];
         let name = $scope.searchInputText;
-        $scope.searchedPoiDiv = true;
         $http.get(api_url + 'getInterestByname/' + name).then
         (function successCallback(response){
             if(response.data.length > 0){
+                $scope.searchedPoiDiv = true;
                 $scope.searchedPois.splice(0,1);
                 // $scope.searchedPois = response.data[0];
                 $scope.searchResultPoiName = response.data[0]['poiName'];
                 $scope.searchResultPoiImage = response.data[0]['image'];
+                $scope.searchResultPoiCategory = response.data[0]['categoryName'];
+                alert($scope.searchResultPoiCategory +' is $scope.searchReultPoiCategory');
+            }
+            else{
+                alert("No results were found.");
+                $scope.searchedPoiDiv = false;
             }
         }, function errorCallback(response){
             alert(response.status);
@@ -236,14 +304,6 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         (function successCallback(response) {
             $scope.userFavoritePois.splice(0,1);
             $scope.userFavoritePois = response.data;
-            // alert(response.data.length + "length");
-            // for(i=0; i < response.data; i++){
-            //     alert('entered for');
-            //     $scope.userFavoritePoiNames[i] = response.data[i]['poiName'];
-            //     alert('poiName is:' + response.data[i]['poiName']);
-            //     $scope.userFavoritePoiImages[i] = response.data[i]['image'];
-            //     alert('poi image is:' + $scope.userFavoritePoiImages[i]);
-            // }
         }, function errorCallback(response) {
             alert(response.status);
         });
@@ -341,6 +401,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             // alert("Current token is: " + self.token);
             $scope.registerNav = false;
             $scope.favoritesNav = true;
+            $scope.userLoggedInFlag = true;
             $scope.user_label = username;
             getAndShowPopularPois();
             showLastTwoFavoritePois();

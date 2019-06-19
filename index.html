@@ -90,9 +90,19 @@
     </div>
     <div id="poi_search" ng-show='searchDiv'>
         <input placeholder="Search by name" ng-model="searchInputText">
-        <button ng-click="searchCategoriesByName()">Search</button>
+        <button ng-click="searchPoisByName()">Search</button>
+        <button ng-click="showSearchResultCategory()">By Category</button>
 
         <div  ng-show="searchedPoiDiv">
+<!--            <div ng-show="byCategoryFavoritesDiv" ng-repeat="(key ,poiList) in userFavoritePoisCategories">-->
+<!--                <h1><u>{{key}}:</u></h1>-->
+<!--                <div ng-repeat="poi in poiList">-->
+<!--                    <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>-->
+<!--                    <br>-->
+<!--                    <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">-->
+<!--                </div>-->
+<!--            </div>-->
+            <h1 ng-show="searchResultCategory"><u>{{searchResultPoiCategory}}:</u></h1>
             <label ng-click="popPoiInfo(searchResultPoiName)" ng-model="searchResultPoiName">{{searchResultPoiName}}</label>
             <br>
             <img src={{searchResultPoiImage}} ng-click="popPoiInfo(searchResultPoiName)" width="150" height="150">
@@ -185,7 +195,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>{{popup_poi_name}}</h2>
+                <h2>{{popup_poi_name}} <span><input type="checkbox" name="favoriteMark" id="favoriteMarkClass" ng-show="userLoggedInFlag" ng-model="isPoiFavoritedValue" ng-change="favoriteCheckboxClicked(popup_poi_name)" value={{isPoiFavoritedValue}}></span></h2>
             </div>
             <div class="modal-body">
                 <img src="{{popup_poi_image}}" width="100" height="100">
