@@ -78,6 +78,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.searchedPoiDiv = false;
         $scope.searchResultCategory = false;
         $scope.searchResultCategory = false;
+        $scope.showSortSearchByRankButton = true;
+        $scope.searchedByRankPoiDiv = false;
         if($scope.user_label !== 'Guest') {
             showLastTwoFavoritePois();
         }
@@ -105,6 +107,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
 
     $scope.popPoiInfo = function(poiName){
         $scope.popup_poi_name = poiName;
+        $scope.popupReviewDiv = false;
         $http.get(api_url + 'getInterestByName/' + poiName).then
         (function successCallback(response) {
             if(response.data.length > 0) {
@@ -112,9 +115,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
                 let poi = response.data[0];
                 $scope.popup_poi_image = poi['image'];
                 $scope.popup_poi_views = poi['viewsNum'];
-                let rank = poi['poiRank'];
-                rank = rank / 5;
-                $scope.popup_poi_rank = rank.toString();
+                $scope.popup_poi_description = poi['poiDescription'];
+                getInterestRankPoi(poiName); //getInterestRankPoi
                 if (poi['lastReviewID'] === -1) {
                     $scope.popup_poi_first_review = $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
                 } else if (poi['beforeLastReviewID'] === -1) {
@@ -132,6 +134,24 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
 
 
         modal.style.display = "block";
+    };
+
+    function getInterestRankPoi(poiName){
+        $http.get(api_url + 'getInterestRank/' + poiName).then
+        (function successCallback(response) {
+            // alert(response.data.length);
+            // let rank = rank / 5;
+            $scope.popup_poi_rank = response.data[0]['average'].toString();
+            // let avgrank = response.data[0]['average'];
+            // return avgrank;
+        }, function errorCallback(response) {
+            alert(response.status);
+        });
+
+    }
+
+    $scope.addReview = function(poiName){
+        $scope.popupReviewDiv = true;
     };
 
     function setFavoriteMarkValue(poiName){
@@ -283,6 +303,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.byCategoryFavoritesDiv = true;
         $scope.randomFavoritesDiv = false;
         $scope.searchResultCategory = false;
+        $scope.showSortSearchByRankButton = false;
+        $scope.searchedByRankPoiDiv = false;
         $scope.userSearchPoisCategories = {'bla':'kaka'};
         let categories = [];
         $scope.searchedPois = ['bla'];
@@ -296,13 +318,6 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
                     let category = response.data[0]['categoryName'];
                     $scope.userSearchPoisCategories[category] = [];
                     $scope.userSearchPoisCategories[category].push(response.data[0]);
-                    // alert($scope.userSearchPoisCategories[category]);
-                    // $scope.searchedPois.splice(0, 1);
-                    // // $scope.searchedPois = response.data[0];
-                    // $scope.searchResultPoiName = response.data[0]['poiName'];
-                    // $scope.searchResultPoiImage = response.data[0]['image'];
-                    // $scope.searchResultPoiCategory = response.data[0]['categoryName'];
-                    // alert($scope.searchResultPoiCategory + ' is $scope.searchReultPoiCategory');
                 } else {
                     alert("No results were found.");
                     $scope.searchedPoiDiv = false;
@@ -315,6 +330,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             delete $scope.userSearchPoisCategories['bla'];
             $scope.searchedPoiDiv = true;
             $scope.searchResultCategory = true;
+            $scope.showSortSearchByRankButton = true;
             $http.get(api_url + 'getRandomPOI/100').then
             (function successCallback(response) {
                 for(let i=0; i<response.data.length; i++){
@@ -339,6 +355,64 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             });
         }
     };
+
+    $scope.postReview = function(poiName){
+        let reviewDesc = $scope.reviewDescription;
+        let reviewRank = $scope.reviewRank;
+        let reviewNum = parseInt(reviewRank);
+        if(reviewDesc.length == 0){
+            alert('Please enter text to post a review.');
+        }
+        else if(reviewRank.length == 0 || reviewNum>5 || reviewNum<1){
+            alert('Please enter rank between 1 and 5 to post a review.');
+        }
+        else{
+            let data = {
+                "poiName": poiName,
+                "reviewDescription": reviewDesc,
+                "reviewRank": reviewRank
+            };
+            var config = {
+                headers: {
+                    'x-auth-token': self.token,
+                    'Content-Type': 'application/json'
+                }
+            };
+                $http.post(api_url + 'auth/addReview', data, config).then
+                (function successCallback(response) {
+                    alert('Review posted!');
+                }, function errorCallback(response) {
+                    alert(response.status);
+                });
+            }
+
+    };
+
+    $scope.sortSearchResultsByRank = function(){
+        if($scope.searchInputText.length == 0) {
+            $scope.searchResultCategory = false;
+            $scope.searchedPoiDiv = false;
+            $scope.searchedByRankPoiDiv = true;
+            $http.get(api_url + 'getRandomPOI/100').then
+            (function successCallback(response) {
+                let searchResults = sortPoisByRank(response.data);
+                $scope.userSearchPoisRank = searchResults;
+            }, function errorCallback(response) {
+                alert(response.status);
+            });
+        }
+    };
+
+    function sortPoisByRank(pois){
+        let ans = [];
+        pois.sort(function(a, b){
+            return b.poiRank - a.poiRank;
+        });
+        for(let i=0; i<pois.length; i++){
+            ans.push(pois[i]);
+        }
+        return ans;
+    }
 
     function getAndShowFavorites(){
         let userName = $scope.user_label;
@@ -451,6 +525,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             $scope.registerNav = false;
             $scope.favoritesNav = true;
             $scope.userLoggedInFlag = true;
+            $scope.addReviewButton = true;
             $scope.user_label = username;
             getAndShowPopularPois();
             showLastTwoFavoritePois();

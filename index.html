@@ -5,7 +5,6 @@
 <!--    <title>Title</title>-->
 <!--</head>-->
 <link href="style.css" rel="stylesheet" type="text/css">
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-route/angular-route.js"></script>
 <body ng-app="myApp" ng-controller="myController as myCtrl">
@@ -93,6 +92,7 @@
         <input placeholder="Search by name" ng-model="searchInputText" ng-init="searchInputText=''">
         <button ng-click="searchPoisByName()">Search</button>
         <button ng-click="showSearchResultCategory()">By Category</button>
+        <button ng-click="sortSearchResultsByRank()" ng-show="showSortSearchByRankButton">By Highest Rank</button>
 
 <!--        <div  ng-show="searchedPoiDiv">-->
             <div ng-show="searchedPoiDiv" ng-repeat="(key ,poiList) in userSearchPoisCategories">
@@ -102,6 +102,12 @@
                     <br>
                     <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
                 </div>
+            </div>
+
+            <div ng-show="searchedByRankPoiDiv" ng-repeat="poi in userSearchPoisRank">
+                <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
+                <br>
+                <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
             </div>
 <!--            <h1 ng-show="searchResultCategory"><u>{{searchResultPoiCategory}}:</u></h1>-->
 <!--            <label ng-click="popPoiInfo(searchResultPoiName)" ng-model="searchResultPoiName">{{searchResultPoiName}}</label>-->
@@ -197,14 +203,29 @@
             <div class="modal-header">
                 <span class="close">&times;</span>
                 <h2>{{popup_poi_name}}
-                    <span>
+                    <span align="right">
+                        <button ng-show="addReviewButton" ng-click="addReview(popup_poi_name)">Add Review</button>
                         <input type="checkbox" name="favoriteMark" id="favoriteMarkClass" ng-show="userLoggedInFlag" ng-model="isPoiFavoritedValue" ng-change="favoriteCheckboxClicked(popup_poi_name)" value={{isPoiFavoritedValue}}>
                     </span>
                 </h2>
             </div>
             <div class="modal-body">
-                <img src="{{popup_poi_image}}" width="100" height="100">
-                <p>Enter poi description here.</p>
+<!--                <img src="{{popup_poi_image}}" width="100" height="100">-->
+                <div ng-show="popupReviewDiv">
+                    <form>
+                        <fieldset>
+                            <legend>Your review</legend>
+                            <p>
+                                <textarea id="myTextArea" rows = "4" cols = "80" ng-model="reviewDescription" ng-init="reviewDescription=''"></textarea>
+                                <br>
+                                Enter rank between 1 (worst) to 5 (Best):  <input type="text" placeholder="1-5" ng-model="reviewRank" ng-init="reviewRank=''">
+                                <button ng-click="postReview(popup_poi_name)">Post review!</button>
+                            </p>
+                        </fieldset>
+                    </form>
+                </div>
+                <h3>About:</h3>
+                <p>{{popup_poi_description}}</p>
                 <p>First review: {{popup_poi_first_review}}</p>
                 <p>Second review: {{popup_poi_second_review}}</p>
             </div>
