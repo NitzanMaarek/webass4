@@ -90,7 +90,7 @@
         </form>
     </div>
     <div id="poi_search" ng-show='searchDiv'>
-        <input placeholder="Search by name" ng-model="searchInputText">
+        <input placeholder="Search by name" ng-model="searchInputText" ng-init="searchInputText=''">
         <button ng-click="searchPoisByName()">Search</button>
         <button ng-click="showSearchResultCategory()">By Category</button>
 

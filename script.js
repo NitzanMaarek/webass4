@@ -77,8 +77,10 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.favoritesDiv = false;
         $scope.searchedPoiDiv = false;
         $scope.searchResultCategory = false;
-        showLastTwoFavoritePois();
-
+        $scope.searchResultCategory = false;
+        if($scope.user_label !== 'Guest') {
+            showLastTwoFavoritePois();
+        }
     };
     $scope.showRestorePW = function () {
         $scope.loginDiv = false;
@@ -89,6 +91,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.searchedPoiDiv = false;
     };
     $scope.showFavorites = function () {
+        $scope.searchResultCategory = false;
         $scope.loginDiv = false;
         $scope.registerDiv = false;
         $scope.restorePWDiv = false;
@@ -279,18 +282,21 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     $scope.searchPoisByName = function(){
         $scope.byCategoryFavoritesDiv = true;
         $scope.randomFavoritesDiv = false;
+        $scope.searchResultCategory = false;
         $scope.userSearchPoisCategories = {'bla':'kaka'};
         let categories = [];
         $scope.searchedPois = ['bla'];
         let name = $scope.searchInputText;
         if(name.length > 0) {
-            $http.get(api_url + 'getInterestByname/' + name).then
+            $http.get(api_url + 'getInterestByName/' + name).then
             (function successCallback(response) {
                 delete $scope.userSearchPoisCategories['bla'];
                 if (response.data.length > 0) {
                     $scope.searchedPoiDiv = true;
-                    let category = response.data[0]['poiName'];
-                    $scope.userSearchPoisCategories[category] = response.data[0];
+                    let category = response.data[0]['categoryName'];
+                    $scope.userSearchPoisCategories[category] = [];
+                    $scope.userSearchPoisCategories[category].push(response.data[0]);
+                    // alert($scope.userSearchPoisCategories[category]);
                     // $scope.searchedPois.splice(0, 1);
                     // // $scope.searchedPois = response.data[0];
                     // $scope.searchResultPoiName = response.data[0]['poiName'];
@@ -306,11 +312,11 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             });
         }
         else{
-
             delete $scope.userSearchPoisCategories['bla'];
+            $scope.searchedPoiDiv = true;
+            $scope.searchResultCategory = true;
             $http.get(api_url + 'getRandomPOI/100').then
             (function successCallback(response) {
-
                 for(let i=0; i<response.data.length; i++){
                     let category = response.data[i]['categoryName'];
                     if(!categories.includes(category)){
