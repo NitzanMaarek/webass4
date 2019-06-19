@@ -5,6 +5,7 @@
 <!--    <title>Title</title>-->
 <!--</head>-->
 <link href="style.css" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-route/angular-route.js"></script>
 <body ng-app="myApp" ng-controller="myController as myCtrl">
@@ -93,20 +94,20 @@
         <button ng-click="searchPoisByName()">Search</button>
         <button ng-click="showSearchResultCategory()">By Category</button>
 
-        <div  ng-show="searchedPoiDiv">
-<!--            <div ng-show="byCategoryFavoritesDiv" ng-repeat="(key ,poiList) in userFavoritePoisCategories">-->
-<!--                <h1><u>{{key}}:</u></h1>-->
-<!--                <div ng-repeat="poi in poiList">-->
-<!--                    <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>-->
-<!--                    <br>-->
-<!--                    <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">-->
-<!--                </div>-->
-<!--            </div>-->
-            <h1 ng-show="searchResultCategory"><u>{{searchResultPoiCategory}}:</u></h1>
-            <label ng-click="popPoiInfo(searchResultPoiName)" ng-model="searchResultPoiName">{{searchResultPoiName}}</label>
-            <br>
-            <img src={{searchResultPoiImage}} ng-click="popPoiInfo(searchResultPoiName)" width="150" height="150">
-        </div>
+<!--        <div  ng-show="searchedPoiDiv">-->
+            <div ng-show="searchedPoiDiv" ng-repeat="(key ,poiList) in userSearchPoisCategories">
+                <h1 ng-show="searchResultCategory"><u>{{key}}:</u></h1>
+                <div ng-repeat="poi in poiList">
+                    <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
+                    <br>
+                    <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
+                </div>
+            </div>
+<!--            <h1 ng-show="searchResultCategory"><u>{{searchResultPoiCategory}}:</u></h1>-->
+<!--            <label ng-click="popPoiInfo(searchResultPoiName)" ng-model="searchResultPoiName">{{searchResultPoiName}}</label>-->
+<!--            <br>-->
+<!--            <img src={{searchResultPoiImage}} ng-click="popPoiInfo(searchResultPoiName)" width="150" height="150">-->
+<!--        </div>-->
 
         <table id="loggedInUserPoisTable" border=0 width="1000px" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">
             <tr>
@@ -128,14 +129,14 @@
                     <img src="{{loggedInUserPopularImg2}}" ng-click="popPoiInfo(loggedInUserPopularLbl2)" width="150" height="150">
                 </td>
                 <td align="center">
-                    <label ng-model="loggedInUserFavoriteLbl1" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)">{{loggedInUserFavoriteLbl1}}</label>
+                    <label ng-model="loggedInUserFavoriteLbl1" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-init="loggedInUserFavoriteLbl1='No favorite saved.'">{{loggedInUserFavoriteLbl1}}</label>
                     <br>
-                    <img src="{{loggedInUserFavoriteImg1}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" width="150" height="150">
+                    <img src="{{loggedInUserFavoriteImg1}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-show="showUserFavoriteImage1"  width="150" height="150">
                 </td>
                 <td align="center">
-                    <label ng-model="loggedInUserFavoriteLbl2" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)">{{loggedInUserFavoriteLbl2}}</label>
+                    <label ng-model="loggedInUserFavoriteLbl2" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-init="loggedInUserFavoriteLbl2='No favorite saved.'">{{loggedInUserFavoriteLbl2}}</label>
                     <br>
-                    <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" width="150" height="150">
+                    <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-show="showUserFavoriteImage2" width="150" height="150">
                 </td>
             </tr>
         </table>
@@ -195,7 +196,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
-                <h2>{{popup_poi_name}} <span><input type="checkbox" name="favoriteMark" id="favoriteMarkClass" ng-show="userLoggedInFlag" ng-model="isPoiFavoritedValue" ng-change="favoriteCheckboxClicked(popup_poi_name)" value={{isPoiFavoritedValue}}></span></h2>
+                <h2>{{popup_poi_name}}
+                    <span>
+                        <input type="checkbox" name="favoriteMark" id="favoriteMarkClass" ng-show="userLoggedInFlag" ng-model="isPoiFavoritedValue" ng-change="favoriteCheckboxClicked(popup_poi_name)" value={{isPoiFavoritedValue}}>
+                    </span>
+                </h2>
             </div>
             <div class="modal-body">
                 <img src="{{popup_poi_image}}" width="100" height="100">

@@ -77,6 +77,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.favoritesDiv = false;
         $scope.searchedPoiDiv = false;
         $scope.searchResultCategory = false;
+        showLastTwoFavoritePois();
 
     };
     $scope.showRestorePW = function () {
@@ -95,6 +96,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $scope.favoritesDiv = true;
         $scope.randomFavoritesDiv = true;
         $scope.searchedPoiDiv = false;
+        $scope.byCategoryFavoritesDiv = false;
         getAndShowFavorites();
     };
 
@@ -245,23 +247,25 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
             }
         };
         if(!$scope.isPoiFavoritedValue){ //Already favorited -> remove it.
-            // auth/removeInterestFromFavorites
             $http.post(api_url + 'auth/removeInterestFromFavorites', data, config).then
             (function successCallback(response) {
                 alert(poiName + ' removed from your favorites!');
                 getAndShowNumberOfFavorites();
-                // $scope.isPoiFavoritedValue = !$scope.isPoiFavoritedValue;
+                if($scope.randomFavoritesDiv || $scope.byCategoryFavoritesDiv) {
+                    $scope.showFavorites();
+                }
             }, function errorCallback(response) {
                 alert(response.status);
             });
         }
         else{   //not favorited? add it.
-            // auth/addInterestToFavorites
             $http.post(api_url + 'auth/addInterestToFavorites', data, config).then
             (function successCallback(response) {
                 alert(poiName + ' added to your favorites!');
                 getAndShowNumberOfFavorites();
-                // $scope.isPoiFavoritedValue = !$scope.isPoiFavoritedValue;
+                if($scope.randomFavoritesDiv || $scope.byCategoryFavoritesDiv) {
+                    $scope.showFavorites();
+                }
             }, function errorCallback(response) {
                 alert(response.status);
             });
@@ -273,26 +277,61 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     };
 
     $scope.searchPoisByName = function(){
+        $scope.byCategoryFavoritesDiv = true;
+        $scope.randomFavoritesDiv = false;
+        $scope.userSearchPoisCategories = {'bla':'kaka'};
+        let categories = [];
         $scope.searchedPois = ['bla'];
         let name = $scope.searchInputText;
-        $http.get(api_url + 'getInterestByname/' + name).then
-        (function successCallback(response){
-            if(response.data.length > 0){
-                $scope.searchedPoiDiv = true;
-                $scope.searchedPois.splice(0,1);
-                // $scope.searchedPois = response.data[0];
-                $scope.searchResultPoiName = response.data[0]['poiName'];
-                $scope.searchResultPoiImage = response.data[0]['image'];
-                $scope.searchResultPoiCategory = response.data[0]['categoryName'];
-                alert($scope.searchResultPoiCategory +' is $scope.searchReultPoiCategory');
-            }
-            else{
-                alert("No results were found.");
-                $scope.searchedPoiDiv = false;
-            }
-        }, function errorCallback(response){
-            alert(response.status);
-        });
+        if(name.length > 0) {
+            $http.get(api_url + 'getInterestByname/' + name).then
+            (function successCallback(response) {
+                delete $scope.userSearchPoisCategories['bla'];
+                if (response.data.length > 0) {
+                    $scope.searchedPoiDiv = true;
+                    let category = response.data[0]['poiName'];
+                    $scope.userSearchPoisCategories[category] = response.data[0];
+                    // $scope.searchedPois.splice(0, 1);
+                    // // $scope.searchedPois = response.data[0];
+                    // $scope.searchResultPoiName = response.data[0]['poiName'];
+                    // $scope.searchResultPoiImage = response.data[0]['image'];
+                    // $scope.searchResultPoiCategory = response.data[0]['categoryName'];
+                    // alert($scope.searchResultPoiCategory + ' is $scope.searchReultPoiCategory');
+                } else {
+                    alert("No results were found.");
+                    $scope.searchedPoiDiv = false;
+                }
+            }, function errorCallback(response) {
+                alert(response.status);
+            });
+        }
+        else{
+
+            delete $scope.userSearchPoisCategories['bla'];
+            $http.get(api_url + 'getRandomPOI/100').then
+            (function successCallback(response) {
+
+                for(let i=0; i<response.data.length; i++){
+                    let category = response.data[i]['categoryName'];
+                    if(!categories.includes(category)){
+                        categories.push(category);
+                    }
+                }
+                categories.sort();
+                for(let i=0; i<categories.length; i++){
+                    $scope.userSearchPoisCategories[categories[i]] = [];
+                    for(let j=0; j<response.data.length; j++){
+                        let category = response.data[j]['categoryName'];
+                        if(categories[i] === category){
+                            $scope.userSearchPoisCategories[category].push(response.data[j]);
+                        }
+                    }
+                }
+
+            }, function errorCallback(response) {
+                alert(response.status);
+            });
+        }
     };
 
     function getAndShowFavorites(){
@@ -345,6 +384,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
 
     function showLastTwoFavoritePois(){
         let userName = $scope.user_label;
+        $scope.showUserFavoriteImage1 = false;
+        $scope.showUserFavoriteImage2 = false;
         $http.get(api_url + 'auth/getUserFavoriteInterests/' + userName, {headers:{"x-auth-token": self.token}}).then
         (function successCallback(response) {
             let dataLength = response.data.length;
@@ -352,9 +393,11 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
                 $scope.showNoFavoritesMessage = false;
                 $scope.loggedInUserFavoriteLbl1 = response.data[dataLength - 1]['poiName'];
                 $scope.loggedInUserFavoriteImg1 = response.data[dataLength - 1]['image'];
+                $scope.showUserFavoriteImage1 = true;
                 if(dataLength > 1){
                     $scope.loggedInUserFavoriteLbl2 = response.data[dataLength - 2]['poiName'];
                     $scope.loggedInUserFavoriteImg2 = response.data[dataLength - 2]['image'];
+                    $scope.showUserFavoriteImage2 = true;
                 }
             }
         }, function errorCallback(response) {
