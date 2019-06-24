@@ -70,3 +70,40 @@ padding: 20px;
     from {top: -300px; opacity: 0}
     to {top: 0; opacity: 1}
 }
+
+menu ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+menu li{
+    display: inline-block;
+    margin-left: 10px;
+    padding: 7px;
+}
+
+menu a{
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 17px;
+    padding: 14px 16px;
+}
+
+menu a:hover{
+    background-color: #ddd;
+    color: black;
+}
+menu{
+    background-color: #2ACADC;
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#loginLabel{
+    float: right;
+    margin: 0;
+    padding: 7px 30px 1px 1px;
+}
