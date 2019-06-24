@@ -106,10 +106,13 @@
 <!--        <div  ng-show="searchedPoiDiv">-->
             <div ng-show="searchedPoiDiv" ng-repeat="(key ,poiList) in userSearchPoisCategories">
                 <h1 ng-show="searchResultCategory"><u>{{key}}:</u></h1>
+                <div class="row text-center d-flex justify-content-center" align="center">
                 <div ng-repeat="poi in poiList">
-                    <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
-                    <br>
-                    <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
+                    <figure>
+                        <img src="{{poi.image}}" ng-click="popPoiInfo(poi.poiName)" class="img-thumbnail" />
+                        <figcaption ng-model="poi.poiName" ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</figcaption>
+                    </figure>
+                </div>
                 </div>
             </div>
 
