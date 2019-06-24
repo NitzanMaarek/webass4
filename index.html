@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <!--<head>-->
 <!--    <meta charset="UTF-8">-->
 <!--    <title>Title</title>-->
@@ -33,11 +35,11 @@
     </div>
     <div id="register" ng-controller="myController" ng-show='registerDiv'>
         <form ng-submit="register()">
-            <label>Username:</label> <input id="register_username" type="text" ng-model="register_username">
+            <label>Username:</label> <input id="register_username" type="text" ng-model="register_username" required>
             <br>
-            <label>Password:</label> <input id="register_password" type="password" ng-model="register_password">
+            <label>Password:</label> <input id="register_password" type="password" ng-model="register_password" required>
             <br>
-            <label>First Name:</label> <input id="register_fname" type="text" ng-model="register_fname">
+            <label>First Name:</label> <input id="register_fname" type="text" ng-model="register_fname" required="">
             <br>
             <label>Last Name:</label> <input id="register_lname" type="text" ng-model="register_lname">
             <br>
@@ -64,7 +66,7 @@
             <br>
             <!--  NEED TO ADD 2 POIS THAT USER IS INTERESTED IN-->
             <label>Interests:
-                <select id="categories" ng-model="register_category">
+                <select multiple="" id="categories" ng-model="register_category">
                     <option value="Historical Sites">Historical Sites</option>
                     <option value="Hotels and Hostels">Hotels and Hostels</option>
                     <option value="Nature">Nature</option>
@@ -122,37 +124,85 @@
 <!--            <img src={{searchResultPoiImage}} ng-click="popPoiInfo(searchResultPoiName)" width="150" height="150">-->
 <!--        </div>-->
 
-        <table id="loggedInUserPoisTable" border=0 width="1000px" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">
-            <tr>
-                <td colspan="2" align="center">Popular Points of Interests</td>
-                <td colspan="2" align="center">Favorite Points of Interests
-                <br>
-                    <label ng-show="showNoFavoritesMessage" ng-init="showNoFavoritesMessage=true">No favorites to show.</label>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">
-                    <label ng-model="loggedInUserPopularLbl1" ng-click="popPoiInfo(loggedInUserPopularLbl1)">{{loggedInUserPopularLbl1}}</label>
-                    <br>
-                    <img src="{{loggedInUserPopularImg1}}" ng-click="popPoiInfo(loggedInUserPopularLbl1)" width="150" height="150">
-                </td>
-                <td align="center">
-                    <label ng-model="loggedInUserPopularLbl2" ng-click="popPoiInfo(loggedInUserPopularLbl2)">{{loggedInUserPopularLbl2}}</label>
-                    <br>
-                    <img src="{{loggedInUserPopularImg2}}" ng-click="popPoiInfo(loggedInUserPopularLbl2)" width="150" height="150">
-                </td>
-                <td align="center">
-                    <label ng-model="loggedInUserFavoriteLbl1" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-init="loggedInUserFavoriteLbl1='No favorite saved.'">{{loggedInUserFavoriteLbl1}}</label>
-                    <br>
-                    <img src="{{loggedInUserFavoriteImg1}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-show="showUserFavoriteImage1"  width="150" height="150">
-                </td>
-                <td align="center">
-                    <label ng-model="loggedInUserFavoriteLbl2" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-init="loggedInUserFavoriteLbl2='No favorite saved.'">{{loggedInUserFavoriteLbl2}}</label>
-                    <br>
-                    <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-show="showUserFavoriteImage2" width="150" height="150">
-                </td>
-            </tr>
-        </table>
+        <div id="loggedInUserPois" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">
+            <div class="row text-center d-flex justify-content-center" align="center">
+                <div class="col-xs-2">
+                    <div class="row text-center d-flex justify-content-center" align="center">
+                        <figure>
+                            Popular Points of Interests
+                        </figure>
+                    </div>
+                    <div class="row text-center d-flex justify-content-center" align="center">
+                        <figure>
+                            <img src="{{loggedInUserPopularImg1}}" ng-click="popPoiInfo(loggedInUserPopularLbl1)" class="img-thumbnail" />
+                            <figcaption ng-model="loggedInUserPopularLbl1" ng-click="popPoiInfo(loggedInUserPopularLbl1)">{{loggedInUserPopularLbl1}}</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="{{loggedInUserPopularImg2}}" ng-click="popPoiInfo(loggedInUserPopularLbl2)" class="img-thumbnail" />
+                            <figcaption ng-model="loggedInUserPopularLbl2" ng-click="popPoiInfo(loggedInUserPopularLbl2)">{{loggedInUserPopularLbl2}}</figcaption>
+                        </figure>
+
+                    </div>
+                </div>
+                <div class="col-xs-2">
+                    <div class="row text-center d-flex justify-content-center" align="center">
+                        <figure>
+                            Favorite Points of Interests
+                        </figure>
+                    </div>
+                    <div class="row text-center d-flex justify-content-center" align="center">
+                        <figure>
+                            <img src="{{loggedInUserFavoriteImg1}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" class="img-thumbnail" />
+                            <figcaption ng-model="loggedInUserFavoriteLbl1" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)">{{loggedInUserFavoriteLbl1}}</figcaption>
+                        </figure>
+                        <figure>
+                            <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" class="img-thumbnail" />
+                            <figcaption ng-model="loggedInUserFavoriteLbl2" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)">{{loggedInUserFavoriteLbl2}}</figcaption>
+                        </figure>
+
+                    </div>
+                </div>
+
+                        <!--                <div class="col-xs-2">-->
+                        <!--                    <div class="row text-center d-flex justify-content-center" align="center">-->
+
+                        <!--                    <div/>-->
+                        <!--                <div/>-->
+
+            </div>
+    </div>
+
+<!--        <table id="loggedInUserPoisTable" border=0 width="1000px" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">-->
+<!--            <tr>-->
+<!--                <td colspan="2" align="center">Popular Points of Interests</td>-->
+<!--                <td colspan="2" align="center">Favorite Points of Interests-->
+<!--                <br>-->
+<!--                    <label ng-show="showNoFavoritesMessage" ng-init="showNoFavoritesMessage=true">No favorites to show.</label>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td align="center">-->
+<!--                    <label ng-model="loggedInUserPopularLbl1" ng-click="popPoiInfo(loggedInUserPopularLbl1)">{{loggedInUserPopularLbl1}}</label>-->
+<!--                    <br>-->
+<!--                    <img src="{{loggedInUserPopularImg1}}" ng-click="popPoiInfo(loggedInUserPopularLbl1)" width="150" height="150">-->
+<!--                </td>-->
+<!--                <td align="center">-->
+<!--                    <label ng-model="loggedInUserPopularLbl2" ng-click="popPoiInfo(loggedInUserPopularLbl2)">{{loggedInUserPopularLbl2}}</label>-->
+<!--                    <br>-->
+<!--                    <img src="{{loggedInUserPopularImg2}}" ng-click="popPoiInfo(loggedInUserPopularLbl2)" width="150" height="150">-->
+<!--                </td>-->
+<!--                <td align="center">-->
+<!--                    <label ng-model="loggedInUserFavoriteLbl1" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-init="loggedInUserFavoriteLbl1='No favorite saved.'">{{loggedInUserFavoriteLbl1}}</label>-->
+<!--                    <br>-->
+<!--                    <img src="{{loggedInUserFavoriteImg1}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-show="showUserFavoriteImage1"  width="150" height="150">-->
+<!--                </td>-->
+<!--                <td align="center">-->
+<!--                    <label ng-model="loggedInUserFavoriteLbl2" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-init="loggedInUserFavoriteLbl2='No favorite saved.'">{{loggedInUserFavoriteLbl2}}</label>-->
+<!--                    <br>-->
+<!--                    <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-show="showUserFavoriteImage2" width="150" height="150">-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>-->
     </div>
     <div id="favorite_pois" ng-show="favoritesDiv">
 
@@ -177,33 +227,29 @@
         </div>
 
     </div>
-    <div id="random_pois"></div>
-        <table id="poiTable" border=1 width=100px>
-            <tbody>
-                <tr>
-                    <td>
-                        <label ng-model="first_poi_home" ng-click="popPoiInfo(first_poi_home)">{{first_poi_home}}</label>
-                    </td>
-                    <td>
-                        <label ng-model="second_poi_home" ng-click="popPoiInfo(second_poi_home)">{{second_poi_home}}</label>
-                    </td>
-                    <td>
-                        <label ng-model="third_poi_home" ng-click="popPoiInfo(third_poi_home)">{{third_poi_home}}</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <img src="{{first_poi_image}}" width="300" height="300" ng-click="popPoiInfo(first_poi_home)">
-                    </td>
-                    <td>
-                        <img src={{second_poi_image}} width="300" height="300" ng-click="popPoiInfo(second_poi_home)">
-                    </td>
-                    <td>
-                        <img src={{third_poi_image}} width="300" height="300" ng-click="popPoiInfo(third_poi_home)">
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="random_pois">
+        <div class="row text-center d-flex justify-content-center" align="center">
+            <div class="col-xs-2">
+                <figure>
+                    <img src="{{first_poi_image}}" class="img-thumbnail"  ng-click="popPoiInfo(first_poi_home)" />
+                    <figcaption ng-model="first_poi_home">{{first_poi_home}}</figcaption>
+                </figure>
+            </div>
+            <div class="col-xs-2">
+                <figure>
+                    <img src="{{second_poi_image}}" class="img-thumbnail"  ng-click="popPoiInfo(second_poi_home)" />
+                    <figcaption ng-model="second_poi_home">{{second_poi_home}}</figcaption>
+                </figure>
+            </div>
+            <div class="col-xs-2">
+                <figure>
+                    <img src="{{third_poi_image}}"  class="img-thumbnail"  ng-click="popPoiInfo(third_poi_home)" />
+                    <figcaption ng-model="third_poi_home">{{third_poi_home}}</figcaption>
+                </figure>
+            </div>
+            <div/>
+    </div>
+
     <div id="myModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
@@ -243,5 +289,6 @@
     </div>
     <script src="script.js"></script>
 
+    <div/>
 </body>
 </html>

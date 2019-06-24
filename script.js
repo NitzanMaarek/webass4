@@ -3,7 +3,7 @@ let api_url = 'http://localhost:3000/';
 
 let config = {
     headers: {
-        'Content-Type': undefined
+        'Content-Type': 'application/json'
     }
 };
 
@@ -522,7 +522,6 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         });
     }
 
-
     $scope.loginCheck = function() {
         let username = $scope.login_username;
         let password = $scope.login_pw;
@@ -589,16 +588,16 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         let answers = [a1, a2]
 
         let data = {
-            userName: $scope.register_username,
-            pw: $scope.register_password,
-            fname: $scope.register_fname,
-            lname: $scope.register_lname,
-            city: $scope.register_city,
-            country: $scope.register_country,
-            email: $scope.register_email,
-            interests: $scope.register_category,
-            questions: questions,
-            answers: answers
+            "userName": $scope.register_username,
+            "pw": $scope.register_password,
+            "fname": $scope.register_fname,
+            "lname": $scope.register_lname,
+            "city": $scope.register_city,
+            "country": $scope.register_country,
+            "email": $scope.register_email,
+            "interests": $scope.register_category,
+            "questions": questions,
+            "answers": answers
         };
 
         $http.post(api_url + 'registerUser', data, config).then
