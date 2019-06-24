@@ -117,16 +117,35 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
                 $scope.popup_poi_views = poi['viewsNum'];
                 $scope.popup_poi_description = poi['poiDescription'];
                 getInterestRankPoi(poiName); //getInterestRankPoi
-                if (poi['lastReviewID'] === -1) {
-                    $scope.popup_poi_first_review = $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
-                } else if (poi['beforeLastReviewID'] === -1) {
-                    $scope.popup_poi_first_review = 'SHOW FIRST REVIEW HERE :0';
-                    $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
-                } else {
-                    $scope.popup_poi_first_review = 'SHOW first REVIEW HERE :0';
-                    $scope.popup_poi_second_review = "SHOW second REVIEW HERE :0";
-                    //TODO: Need to use the review id to get from DB the review content.
-                }
+                $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
+                $scope.popup_poi_first_review = "Sorry! No review was posted yet.";
+                $http.get(api_url + 'getReviews/' + poiName).then
+                    (function successCallback(response) {
+                        let ansLength = response.data.length;
+                        if(ansLength > 1){
+                            $scope.popup_poi_first_review = response.data[ansLength-1]['reviewDescription'];
+                            $scope.popup_poi_second_review = response.data[ansLength-2]['reviewDescription'];
+                        }
+                        else if(ansLength > 0){
+                            $scope.popup_poi_first_review = response.data[-1]['reviewDescription'];
+                        }
+                        else{
+                            $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
+                            $scope.popup_poi_first_review = "Sorry! No review was posted yet.";
+                        }
+                    }, function errorCallback(response) {
+                        alert(response.status);
+                });
+                // if (poi['lastReviewID'] === -1) {
+                //     $scope.popup_poi_first_review = $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
+                // } else if (poi['beforeLastReviewID'] === -1) {
+                //     $scope.popup_poi_first_review = 'SHOW FIRST REVIEW HERE :0';
+                //     $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
+                // } else {
+                //     $scope.popup_poi_first_review = 'SHOW first REVIEW HERE :0';
+                //     $scope.popup_poi_second_review = "SHOW second REVIEW HERE :0";
+                //     //TODO: Need to use the review id to get from DB the review content.
+                // }
             }
         }, function errorCallback(response) {
             alert(response.status);
@@ -296,7 +315,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     };
 
     $scope.showSearchResultCategory = function(){
-      $scope.searchResultCategory = true;
+        $scope.searchPoisByName();
+        $scope.searchResultCategory = true;
     };
 
     $scope.searchPoisByName = function(){
