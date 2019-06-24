@@ -127,7 +127,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
                             $scope.popup_poi_second_review = response.data[ansLength-2]['reviewDescription'];
                         }
                         else if(ansLength > 0){
-                            $scope.popup_poi_first_review = response.data[-1]['reviewDescription'];
+                            $scope.popup_poi_first_review = response.data[ansLength-1]['reviewDescription'];
                         }
                         else{
                             $scope.popup_poi_second_review = "Sorry! No review was posted yet.";
