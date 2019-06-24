@@ -8,18 +8,20 @@
 <script src="lib/angular/angular.js"></script>
 <script src="lib/angular-route/angular-route.js"></script>
 <body ng-app="myApp" ng-controller="myController as myCtrl">
-    <div id="menuDiv">
+    <div class="navbar">
         <menu id="menu_bar">
             <ul>
                 <li><a id="nav_login" href="" ng-click="showLogin()">Login</a></li>
                 <li><a id="nav_poi_search" href="" ng-click="showSearch()">Search</a></li>
-                <li ng-show='registerNav' ng-init="registerNav=true"><a id="nav_register" href="" ng-click="showRegister()">Register</a></li>
-                <li ng-show='favoritesNav' ng-init="favoritesNav=false"><a id="nav_favorites" href="" ng-click="showFavorites()">Favorites: {{numOfFavorites}}</a></li>
+                <li ><a ng-show='registerNav' ng-init="registerNav=true" id="nav_register" href="" ng-click="showRegister()">Register</a></li>
+                <li><a  ng-show='favoritesNav' ng-init="favoritesNav=false" id="nav_favorites" href="" ng-click="showFavorites()">Favorites: {{numOfFavorites}}</a></li>
                 <li id="loginLabel" ng-model="user_label">Hello {{user_label}}</li>
             </ul>
 <!--            <label ng-model="user_label">Hello {{user_label}}</label>-->
         </menu>
     </div>
+    <br>
+    <br>
     <div id="login" ng-show='loginDiv' ng-init="loginDiv=true">
         <form ng-submit="loginCheck()">
             <label>Username:</label> <input id="login_username" type="text" ng-model="login_username">

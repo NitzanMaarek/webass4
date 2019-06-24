@@ -96,6 +96,7 @@ menu a:hover{
 }
 menu{
     background-color: #2ACADC;
+    position: fixed;
     overflow: hidden;
     width: 100%;
     margin: 0;
