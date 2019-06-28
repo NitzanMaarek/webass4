@@ -228,7 +228,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         let answer = $scope.restore_pw_a;
         let userName = $scope.restore_pw_username;
         let question = $scope.restore_pw_q;
-        alert("Security question is: " + question);
+        // alert("Security question is: " + question);
         $http.get(api_url + 'restorePassword/' + userName + "/" + answer + "/" + question).then
         (function successCallback(response) {
             // alert(response.data);

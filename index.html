@@ -28,7 +28,7 @@
         <form ng-submit="loginCheck()">
             <label>Username:</label> <input id="login_username" type="text" ng-model="login_username">
             <label>Password:</label> <input id="login_pw" type="password" ng-model="login_pw">
-            <input type="Submit" value="Login">
+            <input class="myButton" type="Submit" value="Login">
             <a ng-click="showRestorePW()" id="nav_restore_pw" href="">Restore Password</a>
             <a ng-click="showRegister()" href="">Register</a>
         </form>
@@ -83,30 +83,36 @@
             <br>
             <label>Answer 2:</label> <input id="register_a2" type="text" ng-model="register_a2">
             <br>
-            <input type="Submit">
+            <input class="myButton" type="Submit">
         </form>
     </div>
     <div id="restore_pw" ng-show='restorePWDiv'>
         <form>
             <label>Username:</label> <input id="restore_pw_username" type="text" ng-model="restore_pw_username">
-            <button ng-click="getSecurityQuestions()">Show Security Questions</button>
-            <br>
+            <button class="myButton" ng-click="getSecurityQuestions()">Show Security Questions</button>
             <label>Question #1: {{restore_pw_q}}</label> <input id="restore_pw_a1" type="text" ng-model="restore_pw_a" placeholder="Answer #1">
-            <br>
-            <button ng-click="restorePassword()">Restore Password</button>
+            <button class="myButton" ng-click="restorePassword()">Restore Password</button>
             <br>
             <label ng-model="restore_pw_password">Password: {{restore_pw_password}}</label>
         </form>
     </div>
     <div id="poi_search" ng-show='searchDiv'>
-        <input placeholder="Search by name" ng-model="searchInputText" ng-init="searchInputText=''">
-        <button ng-click="searchPoisByName()">Search</button>
-        <button ng-click="showSearchResultCategory()">By Category</button>
-        <button ng-click="sortSearchResultsByRank()" ng-show="showSortSearchByRankButton">By Highest Rank</button>
-
+        <div class="search-div">
+            <input placeholder="Search by name" ng-model="searchInputText" ng-init="searchInputText=''">
+            <button class="myButton" ng-click="searchPoisByName()">Search</button>
+        </div>
+        <br>
+        <br>
+        <div class="search-div">
+            <button class="myButton" ng-click="showSearchResultCategory()">By Category</button>
+            <button class="myButton" ng-click="sortSearchResultsByRank()" ng-show="showSortSearchByRankButton">By Highest Rank</button>
+        </div>
+        <br>
+        <br>
+        <br>
 <!--        <div  ng-show="searchedPoiDiv">-->
             <div ng-show="searchedPoiDiv" ng-repeat="(key ,poiList) in userSearchPoisCategories">
-                <h1 ng-show="searchResultCategory"><u>{{key}}:</u></h1>
+                <h1 align="center" ng-show="searchResultCategory"><u>{{key}}:</u></h1>
                 <div class="row text-center d-flex justify-content-center" align="center">
                 <div ng-repeat="poi in poiList">
                     <figure>
@@ -211,9 +217,9 @@
     <div id="favorite_pois" ng-show="favoritesDiv">
 
         <h1 align="center"><u>Favorite points of interest</u></h1>
-        <button ng-click="sortByFavoritesRank()">Sort by rank from highest to lowest</button>
+        <button class="myButton" ng-click="sortByFavoritesRank()">Sort by rank from highest to lowest</button>
         <br>
-        <button ng-click="sortByFavoritesCategories()">Sort by categories</button>
+        <button class="myButton" ng-click="sortByFavoritesCategories()">Sort by categories</button>
 
         <div  ng-show="randomFavoritesDiv" ng-repeat="poi in userFavoritePois">
             <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
