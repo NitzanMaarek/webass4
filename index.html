@@ -176,10 +176,11 @@
     <div id="favorite_pois" ng-show="favoritesDiv">
 
         <h1 align="center"><u>Favorite points of interest</u></h1>
-        <button class="myButton" ng-click="sortByFavoritesRank()">Sort by rank from highest to lowest</button>
-        <br>
-        <button class="myButton" ng-click="sortByFavoritesCategories()">Sort by categories</button>
-
+        <center>
+            <button class="myButton" ng-click="sortByFavoritesRank()">Sort by rank from highest to lowest</button>
+            <br>
+            <button class="myButton" ng-click="sortByFavoritesCategories()">Sort by categories</button>
+        </center>
         <div  ng-show="randomFavoritesDiv" ng-repeat="poi in userFavoritePois">
             <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
             <br>
