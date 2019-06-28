@@ -117,16 +117,12 @@
                 </div>
             </div>
 
-            <div ng-show="searchedByRankPoiDiv" ng-repeat="poi in userSearchPoisRank">
-                <label ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</label>
-                <br>
-                <img src={{poi.image}} ng-click="popPoiInfo(poi.poiName)" width="150" height="150">
+            <div ng-show="searchedByRankPoiDiv">
+                <figure>
+                    <img ng-repeat="poi in userSearchPoisRank" src="{{poi.image}}" ng-click="popPoiInfo(poi.poiName)" class="img-thumbnail" />
+                    <figcaption ng-model="poi.poiName" ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</figcaption>
+                </figure>
             </div>
-<!--            <h1 ng-show="searchResultCategory"><u>{{searchResultPoiCategory}}:</u></h1>-->
-<!--            <label ng-click="popPoiInfo(searchResultPoiName)" ng-model="searchResultPoiName">{{searchResultPoiName}}</label>-->
-<!--            <br>-->
-<!--            <img src={{searchResultPoiImage}} ng-click="popPoiInfo(searchResultPoiName)" width="150" height="150">-->
-<!--        </div>-->
 
         <div id="loggedInUserPois" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">
             <div class="row text-center d-flex justify-content-center" align="center">
@@ -167,46 +163,9 @@
                     </div>
                 </div>
 
-                        <!--                <div class="col-xs-2">-->
-                        <!--                    <div class="row text-center d-flex justify-content-center" align="center">-->
-
-                        <!--                    <div/>-->
-                        <!--                <div/>-->
-
             </div>
     </div>
 
-<!--        <table id="loggedInUserPoisTable" border=0 width="1000px" ng-show="showLoggedInPoiTable" ng-init="showLoggedInPoiTable=false">-->
-<!--            <tr>-->
-<!--                <td colspan="2" align="center">Popular Points of Interests</td>-->
-<!--                <td colspan="2" align="center">Favorite Points of Interests-->
-<!--                <br>-->
-<!--                    <label ng-show="showNoFavoritesMessage" ng-init="showNoFavoritesMessage=true">No favorites to show.</label>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td align="center">-->
-<!--                    <label ng-model="loggedInUserPopularLbl1" ng-click="popPoiInfo(loggedInUserPopularLbl1)">{{loggedInUserPopularLbl1}}</label>-->
-<!--                    <br>-->
-<!--                    <img src="{{loggedInUserPopularImg1}}" ng-click="popPoiInfo(loggedInUserPopularLbl1)" width="150" height="150">-->
-<!--                </td>-->
-<!--                <td align="center">-->
-<!--                    <label ng-model="loggedInUserPopularLbl2" ng-click="popPoiInfo(loggedInUserPopularLbl2)">{{loggedInUserPopularLbl2}}</label>-->
-<!--                    <br>-->
-<!--                    <img src="{{loggedInUserPopularImg2}}" ng-click="popPoiInfo(loggedInUserPopularLbl2)" width="150" height="150">-->
-<!--                </td>-->
-<!--                <td align="center">-->
-<!--                    <label ng-model="loggedInUserFavoriteLbl1" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-init="loggedInUserFavoriteLbl1='No favorite saved.'">{{loggedInUserFavoriteLbl1}}</label>-->
-<!--                    <br>-->
-<!--                    <img src="{{loggedInUserFavoriteImg1}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl1)" ng-show="showUserFavoriteImage1"  width="150" height="150">-->
-<!--                </td>-->
-<!--                <td align="center">-->
-<!--                    <label ng-model="loggedInUserFavoriteLbl2" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-init="loggedInUserFavoriteLbl2='No favorite saved.'">{{loggedInUserFavoriteLbl2}}</label>-->
-<!--                    <br>-->
-<!--                    <img src="{{loggedInUserFavoriteImg2}}" ng-click="popPoiInfo(loggedInUserFavoriteLbl2)" ng-show="showUserFavoriteImage2" width="150" height="150">-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--        </table>-->
     </div>
     <div id="favorite_pois" ng-show="favoritesDiv">
 

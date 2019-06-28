@@ -577,8 +577,8 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
     };
 
     $scope.register = function () {
-        let username = $scope.register_username;
-        let password = $scope.register_password;
+        // let username = $scope.register_username;
+        // let password = $scope.register_password;
         let q1 = $scope.register_q1;
         let a1 = $scope.register_a1;
         let q2 = $scope.register_q2;
@@ -589,7 +589,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
 
         let data = {
             "userName": $scope.register_username,
-            "pw": $scope.register_password,
+            "password": $scope.register_password,
             "fname": $scope.register_fname,
             "lname": $scope.register_lname,
             "city": $scope.register_city,
