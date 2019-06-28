@@ -117,9 +117,9 @@
                 </div>
             </div>
 
-            <div ng-show="searchedByRankPoiDiv">
-                <figure>
-                    <img ng-repeat="poi in userSearchPoisRank" src="{{poi.image}}" ng-click="popPoiInfo(poi.poiName)" class="img-thumbnail" />
+            <div ng-show="searchedByRankPoiDiv" >
+                <figure ng-repeat="poi in userSearchPoisRank">
+                    <img  src="{{poi.image}}" ng-click="popPoiInfo(poi.poiName)" class="img-thumbnail" />
                     <figcaption ng-model="poi.poiName" ng-click="popPoiInfo(poi.poiName)">{{poi.poiName}}</figcaption>
                 </figure>
             </div>

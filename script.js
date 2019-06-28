@@ -603,6 +603,7 @@ app.controller('myController', ['$scope', '$http', 'testFactory', function($scop
         $http.post(api_url + 'registerUser', data, config).then
         (function successCallback(response) {
             alert(response.data);
+            $scope.showLogin();
         }, function errorCallback(response) {
             alert(response.status);
         });
