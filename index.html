@@ -224,13 +224,23 @@
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
-                <span class="close">&times;</span>
-                <h2>{{popup_poi_name}}
-                    <span align="right">
-                        <button ng-show="addReviewButton" ng-click="addReview(popup_poi_name)">Add Review</button>
-                        <input type="checkbox" name="favoriteMark" id="favoriteMarkClass" ng-show="userLoggedInFlag" ng-model="isPoiFavoritedValue" ng-change="favoriteCheckboxClicked(popup_poi_name)" value={{isPoiFavoritedValue}}>
-                    </span>
-                </h2>
+                <div class="d-flex flex-nowrap bd-highlight">
+                    <div class="p-2 bd-highlight">
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <h2>{{popup_poi_name}}</h2>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <button ng-show="addReviewButton" ng-click="addReview(popup_poi_name)"
+                                >Add Review</button>
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <input class="star" type="checkbox" name="favoriteMark" id="favoriteMarkClass" ng-show="userLoggedInFlag"
+                               ng-model="isPoiFavoritedValue" ng-change="favoriteCheckboxClicked(popup_poi_name)" value={{isPoiFavoritedValue}}>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-body">
 <!--                <img src="{{popup_poi_image}}" width="100" height="100">-->
